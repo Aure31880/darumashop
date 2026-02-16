@@ -71,14 +71,14 @@ export default {
       try {
 
         // 1 Create client
-        const clientRes = await api.post('http://127.0.0.1:8000/clients/', {
+        const clientRes = await api.post('/clients/', {
           name: this.form.name,
           email: this.form.email,
           phone: this.form.phone
         })
 
         // 2 Create appointment
-        await api.post('http://127.0.0.1:8000/appointments/', {
+        await api.post('/appointments/', {
           client_id: clientRes.data.id,
           date: this.form.date,
           description: this.form.description
