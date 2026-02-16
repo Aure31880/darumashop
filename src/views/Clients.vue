@@ -34,7 +34,7 @@
 
 <script>
 import AdminLayout from '../layouts/AdminLayout.vue'
-import axios from 'axios'
+import api from '../service/api'
 
 export default {
   components: { AdminLayout },
@@ -48,9 +48,8 @@ export default {
   },
 
   async mounted() {
-    console.log('hello mounted ======>')
     try {
-      const res = await axios.get('http://127.0.0.1:8000/appointments/')
+      const res = await api.get('/appointments/')
       this.rdvs = res.data
     } catch (err) {
       console.error('Erreur chargement clients', err)

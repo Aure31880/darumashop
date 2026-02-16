@@ -9,7 +9,8 @@
 </template>
 
 <script>
-import axios from "axios";
+
+import api from '../service/api'
 
 export default {
   data() {
@@ -23,7 +24,7 @@ export default {
   methods: {
     async submitClient() {
       try {
-        const res = await axios.post("http://127.0.0.1:8000/clients/", {
+        const res = await api.post("/clients/", {
           name: this.name,
           phone: this.phone,
           email: this.email,

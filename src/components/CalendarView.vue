@@ -5,7 +5,7 @@
 <script>
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import axios from 'axios'
+import api from '../service/api'
 
 export default {
   components: { FullCalendar },
@@ -28,7 +28,7 @@ export default {
   },
   async mounted() {
     try {
-      const res = await axios.get('http://127.0.0.1:8000/appointments/')
+      const res = await api.get('/appointments/')
       this.calendarOptions.events = res.data.map(a => ({
         title: `Rdv #${a.client.name}`,
         start: a.date,

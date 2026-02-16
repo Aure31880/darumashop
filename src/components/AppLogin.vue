@@ -8,8 +8,8 @@
 
 <script>
 import { ref } from 'vue'
-import axios from "axios"
 import { useRouter } from "vue-router"
+import api from '../service/api'
 
 export default {
   setup() {
@@ -19,7 +19,7 @@ export default {
 
     const login = async () => {
       try {
-        const res = await axios.post("http://127.0.0.1:8000/login", {
+        const res = await api.post("/login", {
           username: username.value,
           password: password.value
         })

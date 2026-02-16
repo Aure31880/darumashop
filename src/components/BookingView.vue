@@ -50,8 +50,7 @@
 </template>
 
 <script>
-// import api from '../services/api'
-import axios from 'axios'
+import api from '../service/api'
 
 export default {
   data() {
@@ -71,22 +70,21 @@ export default {
     async submitBooking() {
       try {
 
-        // 1️⃣ Create client
-        const clientRes = await axios.post('http://127.0.0.1:8000/clients/', {
+        // 1 Create client
+        const clientRes = await api.post('http://127.0.0.1:8000/clients/', {
           name: this.form.name,
           email: this.form.email,
           phone: this.form.phone
         })
 
-        // 2️⃣ Create appointment
-        const { data } = await axios.post('http://127.0.0.1:8000/appointments/', {
+        // 2 Create appointment
+        await api.post('http://127.0.0.1:8000/appointments/', {
           client_id: clientRes.data.id,
           date: this.form.date,
           description: this.form.description
         })
 
         this.success = true
-        console.log('data ======>', data)
         this.form = {
           name: '',
           email: '',

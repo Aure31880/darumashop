@@ -13,10 +13,6 @@
         <div>Rendez-vous à venir</div>
         <div class="stat-value">{{ IncomingRdvs }}</div>
       </div>
-      <!-- <div class="card">
-        <div>Notifications</div>
-        <div class="stat-value">3</div>
-      </div> -->
     </div>
   <RouterView />
   </AdminLayout>
@@ -25,7 +21,7 @@
 <script>
 import AdminLayout from '../layouts/AdminLayout.vue'
 import CalendarView from '../components/CalendarView.vue'
-import axios from 'axios'
+import api from '../service/api'
 
 export default {
   components: { AdminLayout, CalendarView },
@@ -40,10 +36,9 @@ export default {
   },
   async mounted() {
     try {
-      const clients = await axios.get('http://127.0.0.1:8000/clients/')
+      const clients = await api.get('/clients/')
       this.totalClient = clients.data.length
-      const rdvs = await axios.get('http://127.0.0.1:8000/appointments/')
-      console.log('rdvs =======>', rdvs)
+      const rdvs = await api.get('/appointments/')
       this.totalRdvs = rdvs.data.length
       const start = Date.now()
       const rdvsFiltered = rdvs.data.filter(a => new Date(a.date) >= start)

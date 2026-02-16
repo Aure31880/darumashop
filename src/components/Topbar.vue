@@ -3,3 +3,8 @@
     Welcome, AL 🤘
   </header>
 </template>
+<script>
+export default {
+  
+}
+</script>
