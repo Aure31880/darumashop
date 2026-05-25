@@ -64,7 +64,6 @@ export default {
 
   methods: {
     async submitBooking() {
-      console.log('process.env.FORMSPREE ======>', import.meta.env.VITE_FORMSPREE)
       try {
         const response = await fetch(import.meta.env.VITE_FORMSPREE, {
           method: "POST",
