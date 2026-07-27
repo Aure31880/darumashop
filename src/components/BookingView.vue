@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import api from '../service/api'
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
 
@@ -73,13 +74,14 @@ export default {
   data() {
     return {
       success: false,
+      files: [],
       form: {
         name: '',
         email: '',
         phone: '',
         description: '',
-        file: [],
         date: '',
+        references: []
       },
       previews: []
     }
@@ -110,10 +112,6 @@ export default {
         formData.append('description', this.form.description)
         formData.append('date', this.form.date)
 
-        this.files.forEach((file) => {
-          formData.append('attachments', file)
-        })
-
         const response = await fetch(import.meta.env.VITE_FORMSPREE, {
           method: "POST",
           body: formData,
@@ -123,6 +121,7 @@ export default {
         })
 
         if (response.ok) {
+          await this.createClient()
           toast("Votre message à bien été envoyé !", {
             "theme": "auto",
             "type": "success",
@@ -133,6 +132,47 @@ export default {
         }
       } catch (err) {
         console.error(err)
+      }
+    },
+    async createClient () {
+      try {
+        const response = await api.post('/clients/', {
+          name: this.form.name,
+          email: this.form.email,
+          phone: this.form.phone,
+        })
+        // console.log('coucou respo,se ok', response)
+        await this.createAppointment(response)
+      } catch (err) {
+        console.error('Erreur chargement clients', err)
+      }
+    },
+    async createAppointment (clientRes) {
+      try {
+        console.log('in createAppointment =====>', this.files)
+        const formData = new FormData()
+        
+        formData.append('client_id', clientRes.data.id)
+        formData.append('date', this.form.date)
+        formData.append('description', this.form.description)
+
+        for (const file of this.files) {
+          formData.append('attachments', file)
+        }
+        await api.post('/appointments/', formData)
+
+        this.success = true
+        this.form = {
+          name: '',
+          email: '',
+          phone: '',
+          description: '',
+          date: '',
+          attachments: [] 
+        }
+        this.files = []
+      } catch (err) {
+        console.error('Erreur chargement clients', err)
       }
     },
     resetForm() {
