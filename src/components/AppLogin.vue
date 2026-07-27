@@ -94,27 +94,46 @@
 import { ref } from 'vue'
 import { useRouter } from "vue-router"
 import api from '../service/api'
+import { storeToRefs } from "pinia"
+import { useAuthStore } from "../stores/auth"
 
 export default {
   setup() {
     const router = useRouter()
+    const authStore = useAuthStore()
+
+    const { isLoading } = storeToRefs(authStore)
+
     const username = ref("")
     const password = ref("")
+    const errorMessage = ref("")
 
     const login = async () => {
+      errorMessage.value = ""
+
       try {
-        const res = await api.post("/login", {
-          username: username.value,
-          password: password.value
-        })
-        localStorage.setItem("access_token", res.data.access_token)
+        await authStore.login(
+          username.value,
+          password.value,
+        )
+
         router.push("/dashboard")
-      } catch (err) {
-        alert("Login failed")
+      } catch (error) {
+        console.error("Erreur de connexion :", error)
+
+        errorMessage.value =
+          error.response?.data?.detail ??
+          "Identifiant ou mot de passe incorrect."
       }
     }
 
-    return { username, password, login }
+    return {
+      username,
+      password,
+      errorMessage,
+      isLoading,
+      login,
+    }
   }
 }
 </script>

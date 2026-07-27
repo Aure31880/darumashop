@@ -6,8 +6,14 @@ import tailwindcss from "@tailwindcss/vite"
 export default defineConfig(({ mode }) => ({
   base: mode === 'production' ? '/front/' : '/',
   plugins: [vue(), tailwindcss()],
+  test: {
+    environment: "jsdom",
+    globals: true,
+  },
+
+  resolve: {
+    alias: {
+      "@": "/src",
+    },
+  },
 }))
-// export default defineConfig({
-//   base: '/front/',
-//   plugins: [vue()],
-// })

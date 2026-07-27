@@ -8,11 +8,17 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { onMounted } from "vue"
 import AppLogin from './components/AppLogin.vue'
 import CalendarView from './components/CalendarView.vue'
 import DashboardVue from './views/Dashboard.vue'
+import { useAuthStore } from "./stores/auth"
+const authStore = useAuthStore()
 
+onMounted(() => {
+  authStore.fetchCurrentUser()
+})
 
-export default { components: { CalendarView, DashboardVue, AppLogin } }
+// export default { components: { CalendarView, DashboardVue, AppLogin } }
 </script>
