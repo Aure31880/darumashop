@@ -8,7 +8,6 @@ const routes = [
   { path: '/login', component: AppLogin, meta: { hideLayout: true } },
   { path: '/calendar', component: CalendarView, meta: { requiresAuth: true } },
   { path: '/clients', component: Client, meta: { requiresAuth: true } },
-  // { path: '/book', component: BookingView },
    {
     path: '/client/:id',
     name: 'Client',
@@ -20,7 +19,7 @@ const routes = [
     path: '/booking',
     name: 'Booking',
     component: BookingView,
-    meta: { hideLayout: true } // on va utiliser cette info pour cacher sidebar/topbar
+    meta: { hideLayout: true }
   }
 ]
 const router = createRouter({
