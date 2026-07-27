@@ -141,7 +141,6 @@ export default {
           email: this.form.email,
           phone: this.form.phone,
         })
-        // console.log('coucou respo,se ok', response)
         await this.createAppointment(response)
       } catch (err) {
         console.error('Erreur chargement clients', err)
@@ -149,7 +148,6 @@ export default {
     },
     async createAppointment (clientRes) {
       try {
-        console.log('in createAppointment =====>', this.files)
         const formData = new FormData()
         
         formData.append('client_id', clientRes.data.id)
