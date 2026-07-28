@@ -50,21 +50,21 @@
 
       <section class="detail-grid">
         <article class="detail-card">
-          <h3>Informations</h3>
+          <h3>Informations contact:</h3>
 
           <dl class="information-list">
             <div class="information-row">
-              <dt>Email</dt>
+              <dt>Email:</dt>
               <dd>{{ selected.client.email }}</dd>
             </div>
 
             <div class="information-row">
-              <dt>Téléphone</dt>
+              <dt>Téléphone:</dt>
               <dd>{{ selected.client.phone || 'Non renseigné' }}</dd>
             </div>
 
             <div class="information-row">
-              <dt>Date du rendez-vous</dt>
+              <dt>Date du rendez-vous:</dt>
               <dd>{{ formatFullDate(selected.date) }}</dd>
             </div>
           </dl>
@@ -380,13 +380,13 @@ export default {
   margin: 0;
 }
 
-.information-row {
+/* .information-row {
   display: grid;
   grid-template-columns: 135px 1fr;
   gap: 16px;
   padding: 12px 0;
   border-bottom: 1px solid #262931;
-}
+} */
 
 .information-row:last-child {
   border-bottom: 0;

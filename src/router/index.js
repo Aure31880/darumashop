@@ -3,12 +3,31 @@ import Client from '../views/Clients.vue'
 import CalendarView from '../components/CalendarView.vue'
 import BookingView from '../components/BookingView.vue'
 import AppLogin from '../components/AppLogin.vue'
+import DashboardVue from '../views/Dashboard.vue'
 
 const routes = [
-  { path: '/login', component: AppLogin, meta: { hideLayout: true } },
-  { path: '/calendar', component: CalendarView, meta: { requiresAuth: true } },
-  { path: '/clients', component: Client, meta: { requiresAuth: true } },
-   {
+  { 
+    path: '/login',
+    component: AppLogin,
+    meta: { hideLayout: true }
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: DashboardVue,
+    meta: { requiresAuth: true }
+  },
+  { path:
+    '/calendar',
+    component: CalendarView,
+    meta: { requiresAuth: true }
+  },
+  { 
+    path: '/clients',
+    component: Client,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/client/:id',
     name: 'Client',
     component: Client,

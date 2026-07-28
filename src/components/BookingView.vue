@@ -16,7 +16,7 @@
         </div>
 
         <div class="form-group">
-          <label for="phone">Télephone (optionnel)</label>
+          <label for="phone">Télephone (Optionnel)</label>
           <input id="phone" v-model="form.phone" />
         </div>
 
@@ -31,6 +31,7 @@
           />
         </div>
         <div class="form-group">
+          <label for="description">Images de référence</label>
           <input
             type="file"
             multiple
@@ -45,20 +46,21 @@
             class="preview-card">
             <img :src="image" alt="preview" />
             <button
-              @click="removeImage(index)"
+            type="button"
+              @click.prevent="removeImage(index)"
               class="delete-btn">
               ×
             </button>
           </div>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label>Date rendez-vous (optionnel)</label>
           <input v-model="form.date" type="datetime-local" />
-        </div>
+        </div> -->
 
         <button type="submit" style="background: green">
-          Valider rendez-vous
+          Valider votre message
         </button>
       </form>
     </div>
@@ -80,7 +82,7 @@ export default {
         email: '',
         phone: '',
         description: '',
-        date: '',
+        // date: '',
         references: []
       },
       previews: []
@@ -90,11 +92,13 @@ export default {
   methods: {
     handleFilesUpload(event) {
       const uploadedFiles = Array.from(event.target.files)
-      this.files = uploadedFiles
+      this.files.push(...uploadedFiles)
 
-      this.previews = uploadedFiles.map(file =>
+      const newPreviews = uploadedFiles.map(file =>
         URL.createObjectURL(file)
       )
+      this.previews.push(...newPreviews)
+      event.target.value = ''
     },
     removeImage(index) {
       this.files.splice(index, 1);
@@ -110,7 +114,7 @@ export default {
         formData.append('email', this.form.email)
         formData.append('phone', this.form.phone)
         formData.append('description', this.form.description)
-        formData.append('date', this.form.date)
+        // formData.append('date', this.form.date)
 
         const response = await fetch(import.meta.env.VITE_FORMSPREE, {
           method: "POST",
@@ -165,10 +169,11 @@ export default {
           email: '',
           phone: '',
           description: '',
-          date: '',
+          // date: '',
           attachments: [] 
         }
         this.files = []
+        this.previews = []
       } catch (err) {
         console.error('Erreur chargement clients', err)
       }
