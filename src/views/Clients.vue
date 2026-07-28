@@ -71,7 +71,7 @@
         </article>
 
         <article class="detail-card description-card">
-          <h3>Description du projet</h3>
+          <h3>Description du projet:</h3>
 
           <p v-if="selected.description">
             {{ selected.description }}
@@ -184,9 +184,6 @@ export default {
   },
 
   methods: {
-    // selectClient(client) {
-    //   this.selected = client
-    // },
     selectClient(rdv) {
       this.selected = rdv
     },

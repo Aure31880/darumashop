@@ -1,5 +1,4 @@
 <template>
-  <AdminLayout>
     <div class="stats">
       <div class="card">
         <div>Total Clients</div>
@@ -14,8 +13,9 @@
         <div class="stat-value">{{ IncomingRdvs }}</div>
       </div>
     </div>
+  <!-- <AdminLayout>
+  </AdminLayout> -->
   <RouterView />
-  </AdminLayout>
 </template>
 
 <script>
