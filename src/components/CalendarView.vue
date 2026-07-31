@@ -4,7 +4,14 @@
 
 <script>
 import FullCalendar from '@fullcalendar/vue3'
-import dayGridPlugin from '@fullcalendar/daygrid'
+import dayGridPlugin from '@fullcalendar/vue3/daygrid'
+import themePlugin from '@fullcalendar/vue3/themes/monarch'
+ import interactionPlugin from "@fullcalendar/vue3/interaction";
+
+import '@fullcalendar/vue3/skeleton.css'
+import '@fullcalendar/vue3/themes/monarch/theme.css'
+import '@fullcalendar/vue3/themes/monarch/palettes/blue.css'
+
 import api from '../service/api'
 
 export default {
@@ -13,8 +20,17 @@ export default {
   data() {
     return {
       calendarOptions: {
-        plugins: [dayGridPlugin],
-        initialView: 'dayGridWeek',
+        plugins: [
+          dayGridPlugin,
+          themePlugin,
+          interactionPlugin
+        ],
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+          left: 'prev,next,today',
+          center: 'title',
+          right: 'dayGridMonth,dayGridWeek,dayGridDay' ,
+        },
         events: [],
         eventClick: this.handleEventClick
       }
@@ -30,9 +46,12 @@ export default {
     try {
       const res = await api.get('/appointments/')
       this.calendarOptions.events = res.data.map(a => ({
-        title: `Rdv #${a.client.name}`,
-        start: a.date,
-        clientId: a.id
+        title: `Rdv #${a.client.name}` || 'Rendez-vous',
+        // start: a.date,
+        clientId: a.id,
+        extendedProps: {
+          a,
+        },
       }))
     } catch (err) {
       console.error('Erreur chargement RDV', err)

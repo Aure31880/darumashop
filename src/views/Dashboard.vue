@@ -10,42 +10,35 @@
       </div>
       <div class="card">
         <div>Rendez-vous à venir</div>
-        <div class="stat-value">{{ IncomingRdvs }}</div>
+        <div class="stat-value">{{ incomingRdvs }}</div>
       </div>
     </div>
-  <!-- <AdminLayout>
-  </AdminLayout> -->
   <RouterView />
 </template>
 
-<script>
+<script setup>
+import { onMounted, ref } from 'vue'
 import AdminLayout from '../layouts/AdminLayout.vue'
 import CalendarView from '../components/CalendarView.vue'
+
 import api from '../service/api'
 
-export default {
-  components: { AdminLayout, CalendarView },
-  data() {
-    return {
-      totalClient: null,
-      totalRdvs: null,
-      IncomingRdvs: null,
-    }
-  },
-  methods: {
-  },
-  async mounted() {
-    try {
-      const clients = await api.get('/clients/')
-      this.totalClient = clients.data.length
-      const rdvs = await api.get('/appointments/')
-      this.totalRdvs = rdvs.data.length
-      const start = Date.now()
-      const rdvsFiltered = rdvs.data.filter(a => new Date(a.date) >= start)
-      this.IncomingRdvs = rdvsFiltered.length
-    } catch (err) {
-      console.error('Erreur chargement des data', err)
-    }
+const totalClient = ref(null)
+const totalRdvs =  ref(null)
+const incomingRdvs =  ref(null)
+
+onMounted(async () => {
+  try {
+    const clients = await api.get('/clients/')
+    totalClient.value = clients.data.length
+    console.log('totalClient ====>', totalClient)
+    const rdvs = await api.get('/appointments/')
+    totalRdvs.value = rdvs.data.length
+    const start = Date.now()
+    const rdvsFiltered = rdvs.data.filter(a => new Date(a.date) >= start)
+    incomingRdvs.value = rdvsFiltered.length
+  } catch (err) {
+    console.error('Erreur chargement des data', err)
   }
-}
+})
 </script>

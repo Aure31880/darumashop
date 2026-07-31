@@ -11,10 +11,8 @@
           v-for="rdv in rdvs"
           :key="rdv.id"
           type="button"
-          class="client-item"
-          :class="{ active: selected?.id === rdv.id }"
-          @click="selectClient(rdv)"
-        >
+          :class="[{ active: selected?.id === rdv.id }, 'client-item']"
+          @click="selectClient(rdv)">
           <!-- <div class="client-avatar">
             {{ getInitials(rdv.client.name) }}
           </div> -->
@@ -32,6 +30,13 @@
               <!-- {{ formatDate(rdv.date) }} -->
             </div>
           </div>
+          <span
+            :class="[
+              'status-badge',
+              STATUS_META[rdv.status].badgeClass
+            ]">
+            {{ STATUS_META[rdv.status].label }}
+          </span>
         </button>
       </div>
     </aside>
@@ -43,8 +48,13 @@
           <h2>{{ selected.client.name }}</h2>
         </div>
 
-        <div class="appointment-badge">
-          <!-- {{ formatDate(selected.date) }} -->
+        <div
+          :class="[
+            'rounded-full px-2 py-1 text-xs font-medium',
+            STATUS_META[selected.status].badgeClass
+          ]">
+          <!-- {{ STATUS_LABELS[selected.status] }} -->
+          {{ STATUS_META[selected.status].label }}
         </div>
       </div>
 
@@ -63,23 +73,37 @@
               <dd>{{ selected.client.phone || 'Non renseigné' }}</dd>
             </div>
 
-            <div class="information-row">
+            <!-- <div class="information-row">
               <dt>Date du rendez-vous:</dt>
               <dd>{{ formatFullDate(selected.date) }}</dd>
-            </div>
+            </div> -->
           </dl>
         </article>
 
         <article class="detail-card description-card">
           <h3>Description du projet:</h3>
 
-          <p v-if="selected.description">
+          <div
+            v-if="selected.description"
+            class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words">
             {{ selected.description }}
-          </p>
+          </div>
+          <!-- <p v-if="selected.description">
+            {{ selected.description }}
+          </p> -->
 
           <p v-else class="empty-text">
             Aucune description fournie.
           </p>
+        </article>
+        <article class="detail-card description-card">
+          <h3>Information rendez-vous:</h3>
+          <div class="information-row">
+          <!-- Input selected number of seance -->
+          <!-- Input datepicker -->
+            <dt>Date du rendez-vous:</dt>
+            <dd>{{ formatFullDate(selected.date) }}</dd>
+          </div>
         </article>
       </section>
 
@@ -91,38 +115,135 @@
           </div>
 
           <span class="attachment-count">
-            {{ selected.attachments?.length || 0 }}
-            image{{ selected.attachments?.length > 1 ? 's' : '' }}
+            {{ referenceAttachments?.length || 0 }}
+            image{{ referenceAttachments?.length > 1 ? 's' : '' }}
           </span>
         </div>
 
         <div
-          v-if="selected.attachments?.length"
-          class="attachments-grid"
-        >
+          v-if="referenceAttachments?.length"
+          class="attachments-grid">
           <button
-            v-for="attachment in selected.attachments"
+            v-for="attachment in referenceAttachments"
             :key="attachment.id"
             type="button"
             class="attachment-card"
-            @click="openImage(attachment)"
-          >
+            @click="openImage(attachment)">
             <img
               :src="getAttachmentUrl(attachment.file_path)"
               :alt="attachment.filename"
-              loading="lazy"
-            >
+              loading="lazy">
 
-            <div class="attachment-overlay">
-              <span>{{ attachment.filename }}</span>
-              <span class="view-image">Agrandir</span>
-            </div>
           </button>
         </div>
 
         <div v-else class="empty-attachments">
           Aucune image envoyée pour ce rendez-vous.
         </div>
+      </section>
+
+      <section class="attachments-section finished-tattoo-section">
+        <div class="section-title">
+          <div>
+            <p class="detail-label">Réalisation</p>
+            <h3>Photos du tatouage terminé</h3>
+          </div>
+
+          <span class="attachment-count">
+            {{ finishedAttachments.length }}
+            photo{{ finishedAttachments.length > 1 ? 's' : '' }}
+          </span>
+        </div>
+
+        <div
+          v-if="finishedAttachments.length"
+          class="attachments-grid">
+          <article
+            v-for="attachment in finishedAttachments"
+            :key="attachment.id"
+            class="finished-photo-card">
+            <!-- <button
+              class="delete-photo-button"
+              @click.stop="deleteFinishedPhoto(attachment)">
+              ×
+            </button> -->
+            <div
+              class="attachment-card"
+              @click="openImage(attachment)">
+
+              <img
+                :src="getAttachmentUrl(attachment.file_path)"
+                :alt="attachment.original_filename || attachment.filename">
+              <div class="attachment-overlay">
+                <button
+                  class="delete-photo-button"
+                  @click.stop="deleteFinishedPhoto(attachment)">
+                  ×
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div v-else class="empty-attachments">
+          Aucune photo finale ajoutée.
+        </div>
+        <form
+          class="finished-photo-form"
+          @submit.prevent="uploadFinishedPhotos">
+          <label class="upload-field">
+            <span>Ajouter les photos finales</span>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              multiple
+              @change="handleFinishedPhotoSelection">
+          </label>
+          <div
+            v-if="finishedPhotoPreviews.length"
+            class="attachments-grid upload-previews">
+            <div
+              v-for="(preview, index) in finishedPhotoPreviews"
+              :key="preview.url"
+              class="upload-preview">
+              <img
+                :src="preview.url"
+                :alt="preview.name">
+              <button
+                type="button"
+                @click="removeFinishedPhoto(index)">
+                Retirer
+              </button>
+            </div>
+          </div>
+
+          <!-- <label class="caption-field">
+            <span>Légende Instagram</span>
+
+            <textarea
+              v-model="finishedPhotoCaption"
+              rows="4"
+              placeholder="Tatouage réalisé par AL’ink Tattoo..."
+            />
+          </label> -->
+
+          <!-- <label class="authorization-field">
+            <input
+              v-model="publishAuthorized"
+              type="checkbox"
+            >
+
+            <span>
+              Le client autorise la publication de ces photos
+            </span>
+          </label> -->
+
+          <button
+            type="submit"
+            :disabled="!finishedPhotoFiles.length || isUploadingFinishedPhotos">
+            {{ isUploadingFinishedPhotos ? 'Envoi en cours...' : 'Ajouter les photos' }}
+          </button>
+        </form>
       </section>
     </main>
 
@@ -136,83 +257,189 @@
     <div
       v-if="previewImage"
       class="image-modal"
-      @click.self="previewImage = null"
-    >
+      @click.self="previewImage = null">
       <button
         type="button"
         class="modal-close"
         aria-label="Fermer"
-        @click="previewImage = null"
-      >
+        @click="previewImage = null">
         ×
       </button>
 
       <img
         :src="getAttachmentUrl(previewImage.file_path)"
-        :alt="previewImage.filename"
-      >
+        :alt="previewImage.filename">
     </div>
   </div>
 </template>
 
-<script>
-import AdminLayout from '../layouts/AdminLayout.vue'
-import api from '../service/api'
-import displayService from '../service/displayService'
+<script setup>
+  import { computed, onMounted, ref } from 'vue'
 
+  import AdminLayout from '../layouts/AdminLayout.vue'
+  import api from '../service/api'
+  import displayService from '../service/displayService'
+  import { STATUS, STATUS_LABELS, STATUS_META } from "../constants/status"
 
-export default {
-  components: { AdminLayout },
+  const clients = ref([])
+  const rdvs = ref([])
+  const selected = ref(null)
+  const previewImage = ref(null)
 
-  data() {
-    return {
-      clients: [],
-      rdvs: [],
-      selected: null,
-      previewImage: null,
-      displayService,
-    }
-  },
+  const finishedPhotoFiles = ref([])
+  const finishedPhotoPreviews = ref([])
+  const finishedPhotoCaption = ref('')
+  const publishAuthorized = ref(false)
+  const isUploadingFinishedPhotos = ref(false)
 
-  async mounted() {
+  const referenceAttachments = computed(() => {
+    return selected.value?.attachments?.filter(
+      attachment => attachment.category === 'reference'
+    ) ?? []
+  })
+
+  const finishedAttachments = computed(() => {
+    return selected.value?.attachments?.filter(
+      attachment => attachment.category === 'finished'
+    ) ?? []
+  })
+
+  const followUpAttachments = computed(() => {
+    return selected.value?.attachments?.filter(
+      attachment => attachment.category === 'follow_up'
+    ) ?? []
+  })
+
+  onMounted(async () => {
     try {
-      const res = await api.get('/appointments/')
-      this.rdvs = res.data
-    } catch (err) {
-      console.error('Erreur chargement clients', err)
+      const response = await api.get('/appointments/')
+      rdvs.value = response.data
+    } catch (error) {
+      console.error('Erreur chargement des rendez-vous', error)
     }
-  },
+  })
 
-  methods: {
-    selectClient(rdv) {
-      this.selected = rdv
-    },
-
-    openImage(attachment) {
-      this.previewImage = attachment
-    },
-
-    closeImage() {
-      this.previewImage = null
-    },
-
-    getInitials(name) {
-      return displayService.getInitials(name)
-    },
-
-    formatDate(date) {
-      return displayService.formatDate(date)
-    },
-
-    formatFullDate(date) {
-      return displayService.formatFullDate(date)
-    },
-
-    getAttachmentUrl(filePath) {
-      return displayService.getAttachmentUrl(filePath)
-    },
+  function selectClient(rdv) {
+    selected.value = rdv
+    // console.log(STATUS_LABELS[selected.value.status])
+    console.log(STATUS_META[selected.value.status.badgeClass])
   }
-}
+
+  function openImage(attachment) {
+    previewImage.value = attachment
+  }
+
+  function closeImage() {
+    previewImage.value = null
+  }
+
+  function getInitials(name) {
+    return displayService.getInitials(name)
+  }
+
+  function formatDate(date) {
+    return displayService.formatDate(date)
+  }
+
+  function formatFullDate(date) {
+    return displayService.formatFullDate(date)
+  }
+
+  function getAttachmentUrl(filePath) {
+    return displayService.getAttachmentUrl(filePath)
+  }
+
+  function handleFinishedPhotoSelection(event) {
+    clearFinishedPhotoPreviews()
+
+    const files = Array.from(event.target.files ?? [])
+
+    finishedPhotoFiles.value = files
+
+    finishedPhotoPreviews.value = files.map(file => ({
+      name: file.name,
+      url: URL.createObjectURL(file),
+    }))
+  }
+
+  function removeFinishedPhoto(index) {
+    const preview = finishedPhotoPreviews.value[index]
+
+    if (preview) {
+      URL.revokeObjectURL(preview.url)
+    }
+
+    finishedPhotoFiles.value.splice(index, 1)
+    finishedPhotoPreviews.value.splice(index, 1)
+  }
+
+  function clearFinishedPhotoPreviews() {
+    for (const preview of finishedPhotoPreviews.value) {
+      URL.revokeObjectURL(preview.url)
+    }
+
+    finishedPhotoPreviews.value = []
+  }
+  async function uploadFinishedPhotos() {
+    if (!selected.value?.id || !finishedPhotoFiles.value.length) {
+      return
+    }
+
+    isUploadingFinishedPhotos.value = true
+
+    try {
+      const formData = new FormData()
+
+      for (const file of finishedPhotoFiles.value) {
+        formData.append('attachments', file)
+      }
+
+      formData.append(
+        'caption',
+        finishedPhotoCaption.value
+      )
+
+      formData.append(
+        'publish_authorized',
+        String(publishAuthorized.value)
+      )
+
+      const response = await api.post(
+        `/appointments/${selected.value.id}/attachments`,
+        formData
+      )
+
+      selected.value.attachments.push(...response.data)
+
+      clearFinishedPhotoPreviews()
+      finishedPhotoFiles.value = []
+      finishedPhotoCaption.value = ''
+      publishAuthorized.value = false
+    } catch (error) {
+      console.error(
+        'Erreur lors de l’envoi des photos finales',
+        error
+      )
+    } finally {
+      isUploadingFinishedPhotos.value = false
+    }
+  }
+
+  async function deleteFinishedPhoto(attachment) {
+    if (!confirm('Supprimer cette photo ?')) {
+      return
+    }
+
+    try {
+      await api.delete(`/attachments/${attachment.id}`)
+
+      selected.value.attachments = selected.value.attachments.filter(
+        item => item.id !== attachment.id
+      )
+    } catch (error) {
+      console.error(error)
+    }
+  }
 </script>
 <style scoped>
 .clients-layout {
@@ -260,11 +487,23 @@ export default {
   font-size: 13px;
 }
 
-.client-items {
+.client-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.client-summary {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 24px;
+}
+
+.status-badge {
+  border-radius: 9999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .client-item {
@@ -519,6 +758,41 @@ export default {
 
   .detail-grid {
     grid-template-columns: 1fr;
+  }
+
+  .finished-photo-card {
+    position: relative;
+  }
+  
+  .delete-photo-button {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+
+    width: 24px;
+    height: 24px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.65);
+    color: white;
+
+    font-size: 18px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: 0.2s ease;
+
+  }
+  .delete-photo-button:hover {
+    transform: scale(1.1);
+    background: rgba(0, 0, 0, 0.85);
   }
 }
 </style>
