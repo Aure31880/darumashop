@@ -7,23 +7,24 @@
 
         <div class="form-group">
           <label for="name">Nom, Prénom</label>
-          <input id="name" v-model="form.name" required />
+          <input id="name" class="rounded" v-model="form.name" required />
         </div>
 
         <div class="form-group">
           <label for="email">Email</label>
-          <input id="email" v-model="form.email" type="email" required />
+          <input id="email" class="rounded" v-model="form.email" type="email" required />
         </div>
 
         <div class="form-group">
           <label for="phone">Télephone (Optionnel)</label>
-          <input id="phone" v-model="form.phone" />
+          <input id="phone" class="rounded" v-model="form.phone" />
         </div>
 
-        <div class="form-group">
+        <div class="rounded form-group">
           <label for="description">Description du projet</label>
           <textarea
             id="description"
+            class="rounded"
             v-model="form.description"
             rows="4"
             placeholder="Description du projet tattto, idées, taille, emplacement"
@@ -34,10 +35,10 @@
           <label for="description">Images de référence</label>
           <input
             type="file"
+            class="rounded"
             multiple
             accept="image/*"
-            @change="handleFilesUpload"
-          />
+            @change="handleFilesUpload"/>
         </div>
         <div class="preview-container">
           <div
@@ -48,7 +49,7 @@
             <button
             type="button"
               @click.prevent="removeImage(index)"
-              class="delete-btn">
+              class="btn delete-btn">
               ×
             </button>
           </div>
@@ -59,7 +60,7 @@
           <input v-model="form.date" type="datetime-local" />
         </div> -->
 
-        <button type="submit" style="background: green">
+        <button type="submit" class="btn" style="background: green">
           Valider votre message
         </button>
       </form>
@@ -237,5 +238,8 @@ export default {
 .delete-btn:hover {
   transform: scale(1.1);
   background: rgba(0, 0, 0, 0.85);
+}
+.hidden {
+  display: none;
 }
 </style>

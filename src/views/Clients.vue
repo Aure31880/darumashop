@@ -11,7 +11,7 @@
           v-for="rdv in rdvs"
           :key="rdv.id"
           type="button"
-          :class="[{ active: selected?.id === rdv.id }, 'client-item']"
+          :class="[{ active: selected?.id === rdv.id }, 'btn client-item']"
           @click="selectClient(rdv)">
           <!-- <div class="client-avatar">
             {{ getInitials(rdv.client.name) }}
@@ -40,22 +40,42 @@
         </button>
       </div>
     </aside>
-
+    
     <main v-if="selected" class="client-detail">
+      <div class="menu-container">
+        <button
+          class="menu-btn"
+          @click="showMenu = !showMenu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div
+          v-if="showMenu"
+          class="menu-dropdown">
+          <button
+            class="menu-item danger"
+            @click="deleteClient">
+            Supprimer le client et le rdv
+          </button>
+        </div>
+      </div>
       <div class="detail-header">
         <div>
           <p class="detail-label">Rendez-vous client</p>
           <h2>{{ selected.client.name }}</h2>
         </div>
-
-        <div
+        <select
+          :value="selected.status"
           :class="[
-            'rounded-full px-2 py-1 text-xs font-medium',
-            STATUS_META[selected.status].badgeClass
-          ]">
-          <!-- {{ STATUS_LABELS[selected.status] }} -->
-          {{ STATUS_META[selected.status].label }}
-        </div>
+            'rounded status-select',
+            STATUS_META[selected.status]?.badgeClass]"
+          @change="updateAppointmentStatus($event.target.value)">
+          <option
+            v-for="status in STATUS_OPTIONS"
+            :key="status.value"
+            :value="status.value">
+            {{ status.label }}
+          </option>
+        </select> 
       </div>
 
       <section class="detail-grid">
@@ -63,6 +83,10 @@
           <h3>Informations contact:</h3>
 
           <dl class="information-list">
+            <div class="information-row">
+              <dt>Nom, Prénom:</dt>
+              <dd>{{ selected.client.name }}</dd>
+            </div>
             <div class="information-row">
               <dt>Email:</dt>
               <dd>{{ selected.client.email }}</dd>
@@ -80,7 +104,7 @@
           </dl>
         </article>
 
-        <article class="detail-card description-card">
+        <!-- <article class="detail-card description-card">
           <h3>Description du projet:</h3>
 
           <div
@@ -88,14 +112,11 @@
             class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words">
             {{ selected.description }}
           </div>
-          <!-- <p v-if="selected.description">
-            {{ selected.description }}
-          </p> -->
 
           <p v-else class="empty-text">
             Aucune description fournie.
           </p>
-        </article>
+        </article> -->
         <article class="detail-card description-card">
           <h3>Information rendez-vous:</h3>
           <div class="information-row">
@@ -105,6 +126,32 @@
             <dd>{{ formatFullDate(selected.date) }}</dd>
           </div>
         </article>
+        <article class="detail-card description-card">
+          <h3>Description du projet:</h3>
+
+          <div
+            v-if="selected.description"
+            class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words">
+            {{ selected.description }}
+          </div>
+
+          <p v-else class="empty-text">
+            Aucune description fournie.
+          </p>
+        </article>
+        <!-- <article class="detail-card description-card">
+          <h3>Notes personnelles:</h3>
+
+          <div
+            v-if="selected.description"
+            class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words">
+            {{ selected.description }}
+          </div>
+
+          <p v-else class="empty-text">
+            Aucune note prise.
+          </p>
+        </article> -->
       </section>
 
       <section class="attachments-section">
@@ -127,13 +174,12 @@
             v-for="attachment in referenceAttachments"
             :key="attachment.id"
             type="button"
-            class="attachment-card"
+            class="btn attachment-card"
             @click="openImage(attachment)">
             <img
               :src="getAttachmentUrl(attachment.file_path)"
               :alt="attachment.filename"
               loading="lazy">
-
           </button>
         </div>
 
@@ -176,7 +222,7 @@
                 :alt="attachment.original_filename || attachment.filename">
               <div class="attachment-overlay">
                 <button
-                  class="delete-photo-button"
+                  class="btn delete-photo-button"
                   @click.stop="deleteFinishedPhoto(attachment)">
                   ×
                 </button>
@@ -192,9 +238,10 @@
           class="finished-photo-form"
           @submit.prevent="uploadFinishedPhotos">
           <label class="upload-field">
-            <span>Ajouter les photos finales</span>
+            <span>Ajouter les photos finales </span>
             <input
               type="file"
+              class="rounded upload-input"
               accept="image/jpeg,image/png,image/webp"
               multiple
               @change="handleFinishedPhotoSelection">
@@ -211,6 +258,7 @@
                 :alt="preview.name">
               <button
                 type="button"
+                class="btn"
                 @click="removeFinishedPhoto(index)">
                 Retirer
               </button>
@@ -240,6 +288,7 @@
 
           <button
             type="submit"
+            class="btn"
             :disabled="!finishedPhotoFiles.length || isUploadingFinishedPhotos">
             {{ isUploadingFinishedPhotos ? 'Envoi en cours...' : 'Ajouter les photos' }}
           </button>
@@ -260,7 +309,7 @@
       @click.self="previewImage = null">
       <button
         type="button"
-        class="modal-close"
+        class="btn modal-close"
         aria-label="Fermer"
         @click="previewImage = null">
         ×
@@ -279,7 +328,7 @@
   import AdminLayout from '../layouts/AdminLayout.vue'
   import api from '../service/api'
   import displayService from '../service/displayService'
-  import { STATUS, STATUS_LABELS, STATUS_META } from "../constants/status"
+  import { STATUS, STATUS_LABELS, STATUS_META, STATUS_OPTIONS } from "../constants/status"
 
   const clients = ref([])
   const rdvs = ref([])
@@ -291,6 +340,7 @@
   const finishedPhotoCaption = ref('')
   const publishAuthorized = ref(false)
   const isUploadingFinishedPhotos = ref(false)
+  const showMenu = ref(false)
 
   const referenceAttachments = computed(() => {
     return selected.value?.attachments?.filter(
@@ -440,6 +490,62 @@
       console.error(error)
     }
   }
+  async function deleteClient() {
+    try {
+      await api.delete(`/clients/${selected.value?.client?.id}`)
+      rdvs.value = rdvs.value.filter(
+        rdv => rdv.id !== selected.value.id,
+      )
+
+      selected.value = null
+      showMenu.value = false
+    } catch (error) {
+      console.log('Error delete client', error)
+    }
+  }
+
+  const updateAppointmentStatus = async (newStatus) => {
+    if (!selected.value) {
+      return
+    }
+
+    const appointmentId = selected.value.id
+    const previousStatus = selected.value.status
+
+    console.log("Ancien statut :", previousStatus)
+    console.log("Nouveau statut :", newStatus)
+
+    try {
+      const response = await api.patch(
+        `/appointments/${appointmentId}/status`,
+        {
+          status: newStatus,
+        },
+      )
+
+      const updatedStatus = response.data.status
+
+      selected.value.status = updatedStatus
+
+      const appointment = rdvs.value.find(
+        rdv => rdv.id === appointmentId,
+      )
+
+      if (appointment) {
+        appointment.status = updatedStatus
+      }
+    } catch (error) {
+      selected.value.status = previousStatus
+
+      console.error(
+        "Erreur lors de la mise à jour du statut",
+        error,
+      )
+    }
+  }
+  const openDeleteDialog = () => {
+    showMenu.value = false
+  }
 </script>
 <style scoped>
 .clients-layout {
@@ -448,13 +554,14 @@
   gap: 24px;
   min-height: calc(100vh - 40px);
   padding: 20px;
-  background: #101115;
-  color: #f4f4f5;
+  /* background: #101115; */
+  /* color: #f4f4f5; */
+  color: var(--text);
 }
 
 .clients-list,
 .client-detail {
-  background: #1b1d22;
+  /* background: #1b1d22; */
   border: 1px solid #2a2d34;
   border-radius: 20px;
 }
@@ -482,8 +589,9 @@
 .attachment-count {
   padding: 5px 10px;
   border-radius: 999px;
-  background: #292c33;
-  color: #b8bbc2;
+  /* background: #292c33; */
+  /* color: #b8bbc2; */
+  color: var(--text);
   font-size: 13px;
 }
 
@@ -514,7 +622,7 @@
   padding: 14px;
   color: inherit;
   text-align: left;
-  background: #13151a;
+  /* background: #13151a; */
   border: 1px solid transparent;
   border-radius: 14px;
   cursor: pointer;
@@ -526,14 +634,14 @@
 
 .client-item:hover {
   transform: translateY(-1px);
-  border-color: #3b3f48;
-  background: #181a20;
+  /* border-color: #3b3f48;
+  background: #181a20; */
 }
 
-.client-item.active {
+/* .client-item.active {
   background: #c8102e;
   border-color: #e01b3c;
-}
+} */
 
 .client-avatar {
   display: grid;
@@ -562,16 +670,17 @@
 .client-email,
 .client-date {
   overflow: hidden;
-  color: #9b9ea6;
+  /* color: #9b9ea6; */
+  color: var(--text);
   font-size: 13px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.client-item.active .client-email,
+/* .client-item.active .client-email,
 .client-item.active .client-date {
   color: rgb(255 255 255 / 78%);
-}
+} */
 
 .client-detail {
   padding: 36px;
@@ -579,7 +688,8 @@
 
 .detail-label {
   margin: 0 0 6px;
-  color: #8f929a;
+  /* color: #8f929a; */
+  color: var(--text);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -590,8 +700,9 @@
   padding: 10px 14px;
   border: 1px solid #363941;
   border-radius: 12px;
-  background: #22252b;
-  color: #d5d7dc;
+  /* background: #22252b; */
+  /* color: #d5d7dc; */
+  color: var(--text);
 }
 
 .detail-grid {
@@ -603,7 +714,8 @@
 
 .detail-card {
   padding: 22px;
-  background: #14161b;
+  background: var(--client-card);
+  /* background: #14161b; */
   border: 1px solid #292c33;
   border-radius: 16px;
 }
@@ -629,7 +741,8 @@
 }
 
 .information-row dt {
-  color: #8f929a;
+  /* color: #8f929a; */
+  color: var(--text);
 }
 
 .information-row dd {
@@ -638,7 +751,8 @@
 }
 
 .description-card p {
-  color: #d2d3d7;
+  /* color: #d2d3d7; */
+  color: var(--text);
   line-height: 1.7;
   white-space: pre-wrap;
 }
@@ -661,7 +775,7 @@
   padding: 0;
   border: 1px solid #30333b;
   border-radius: 15px;
-  background: #111318;
+  /* background: #111318; */
   cursor: pointer;
 }
 
@@ -686,19 +800,29 @@
   gap: 12px;
   padding: 34px 13px 12px;
   color: #fff;
-  background: linear-gradient(transparent, rgb(0 0 0 / 85%));
+  /* color: var(--text); */
+  /* background: linear-gradient(transparent, rgb(0 0 0 / 85%)); */
+  /* background: var(--bg-card); */
+}
+button {
+  background: var(--none);
+  /* color: #fff; */
+}
+button:hover {
+  box-shadow: none;
 }
 
 .attachment-overlay span:first-child {
   overflow: hidden;
-  font-size: 13px;
+  font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .view-image {
   flex: none;
-  color: #d6d7da;
+  /* color: #d6d7da; */
+  color: var(--text);
   font-size: 12px;
 }
 
@@ -706,9 +830,10 @@
 .empty-state {
   padding: 42px 20px;
   margin-top: 18px;
-  color: #8f929a;
+  /* color: #8f929a; */
+  color: var(--text);
   text-align: center;
-  background: #14161b;
+  /* background: #14161b; */
   border: 1px dashed #32353d;
   border-radius: 15px;
 }
@@ -725,7 +850,7 @@
   display: grid;
   place-items: center;
   padding: 40px;
-  background: rgb(0 0 0 / 88%);
+  /* background: rgb(0 0 0 / 88%); */
 }
 
 .image-modal img {
@@ -739,11 +864,61 @@
   position: fixed;
   top: 20px;
   right: 28px;
-  color: white;
+  /* color: white; */
+  color: var(--text);
   font-size: 42px;
   background: transparent;
   border: 0;
   cursor: pointer;
+}
+
+.menu-container {
+  position: relative;
+  margin-bottom: 15px
+}
+
+.menu-btn {
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.menu-dropdown {
+  position: relative;
+  /* top: 42px; */
+  right: 0;
+
+  min-width: 100px;
+
+  background: none;
+  /* border: 1px solid #e5e7eb;
+  border-radius: 8px; */
+
+  box-shadow: 0 8px 20px rgba(0,0,0,.12);
+
+  z-index: 100;
+}
+
+.menu-item {
+  width: 35%;
+  border: none;
+  background: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-item.danger {
+  background: #dc2626;
+  color: #FFFFFf;
+}
+.upload-input {
+  width: 112px;
 }
 
 @media (max-width: 900px) {
@@ -769,14 +944,15 @@
     top: 6px;
     right: 6px;
 
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
 
     border: none;
     border-radius: 50%;
 
-    background: rgba(0, 0, 0, 0.65);
+    /* background: rgba(0, 0, 0, 0.65); */
     color: white;
+    /* color: var(--text); */
 
     font-size: 18px;
     line-height: 1;
@@ -792,7 +968,13 @@
   }
   .delete-photo-button:hover {
     transform: scale(1.1);
-    background: rgba(0, 0, 0, 0.85);
+    /* background: rgba(0, 0, 0, 0.85); */
+  }
+  .header-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
   }
 }
 </style>

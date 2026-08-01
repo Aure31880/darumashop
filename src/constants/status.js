@@ -40,3 +40,10 @@ export const STATUS_META = Object.freeze({
     badgeClass: "bg-green-300 text-green-800",
   },
 })
+
+export const STATUS_OPTIONS = Object.freeze(
+  Object.entries(STATUS_META).map(([value, meta]) => ({
+    value,
+    label: meta.label,
+  })),
+)

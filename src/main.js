@@ -6,6 +6,7 @@ import './index.css'
 import './assets/main.css'
 import router from './router/index'
 import axios from 'axios'
+import "@fortawesome/fontawesome-free/css/all.min.css"
 
 const app = createApp(App)
 
