@@ -66,7 +66,7 @@
         <select
           :value="selected.status"
           :class="[
-            'rounded status-select',
+            'rounded status-select status-badge',
             STATUS_META[selected.status]?.badgeClass]"
           @change="updateAppointmentStatus($event.target.value)">
           <option
