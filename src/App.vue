@@ -16,6 +16,10 @@
     <AdminLayout v-else>
       <RouterView />
     </AdminLayout>
+    <div class="idApp">
+      <span>{{ nameApp }}</span>
+      <span>{{ version }}</span>
+    </div>
   </div>
 </template>
 
@@ -30,6 +34,8 @@ import { useTheme } from './composables/useTheme'
 const { theme, toggleTheme } = useTheme()
 
 const authStore = useAuthStore()
+const version = __APP_VERSION__
+const nameApp = __APP_NAME__
 
 onMounted(() => {
   authStore.fetchCurrentUser()
@@ -42,5 +48,14 @@ button {
 button:hover {
   transform: translateY(-2px);
   box-shadow: none;
+}
+.idApp {
+  margin-bottom: 15px;
+  margin-left: 15px;
+}
+
+.idApp span {
+  font: bold;
+  margin: 5px;
 }
 </style>

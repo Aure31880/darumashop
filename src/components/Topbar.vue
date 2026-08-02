@@ -27,37 +27,10 @@ import { useTheme } from '../composables/useTheme'
 
   function logout () {
     authStore.logout()
-    router.push("/login")
+    router.push("/shop-dashboard/login")
   }
   
 </script>
-// <script>
-// import { useRouter } from "vue-router"
-// import { storeToRefs } from "pinia"
-// import { useAuthStore } from "../stores/auth"
-// import { useTheme } from '../composables/useTheme'
-
-
-// export default {
-//   setup() {
-//     const router = useRouter()
-//     const authStore = useAuthStore()
-//     const { user, username } = storeToRefs(authStore)
-//     const { theme } = useTheme()
-
-//     const logout = () => {
-//       authStore.logout()
-//       router.push("/login")
-//     }
-
-//     return {
-//       user,
-//       username,
-//       logout,
-//     }
-//   },
-// }
-// </script>
 <style scoped>
 .topbar {
   display: flex;

@@ -31,14 +31,12 @@ onMounted(async () => {
   try {
     const clients = await api.get('/clients/')
     totalClient.value = clients.data.length
-    console.log('totalClient ====>', totalClient)
     const rdvs = await api.get('/appointments/')
     totalRdvs.value = rdvs.data.length
     const start = Date.now()
     const rdvsFiltered = rdvs.data.filter(a => new Date(a.date) >= start)
     incomingRdvs.value = rdvsFiltered.length
   } catch (err) {
-    next('/login')
     console.error('Erreur chargement des data', err)
   }
 })
