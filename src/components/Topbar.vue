@@ -27,7 +27,7 @@ import { useTheme } from '../composables/useTheme'
 
   function logout () {
     authStore.logout()
-    router.push("/shop-dashboard/login")
+    router.push("/login")
   }
   
 </script>

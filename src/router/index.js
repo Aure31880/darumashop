@@ -8,7 +8,7 @@ import { useAuthStore } from "../stores/auth"
 
 const routes = [
   { 
-    path: '/shop-dashboard/login',
+    path: '/login',
     name: 'login',
     component: AppLogin,
     meta: { hideLayout: true }
