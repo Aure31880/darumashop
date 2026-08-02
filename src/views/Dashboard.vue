@@ -38,6 +38,7 @@ onMounted(async () => {
     const rdvsFiltered = rdvs.data.filter(a => new Date(a.date) >= start)
     incomingRdvs.value = rdvsFiltered.length
   } catch (err) {
+    next('/login')
     console.error('Erreur chargement des data', err)
   }
 })

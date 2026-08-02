@@ -63,4 +63,23 @@ export const useAuthStore = defineStore("auth", () => {
     fetchCurrentUser,
     logout,
   }
+
+  async function initializeAuth() {
+    const token = localStorage.getItem("access_token")
+
+    if (!token) {
+      this.user = null
+      this.isInitialized = true
+      return
+    }
+
+    try {
+      await this.fetchCurrentUser()
+    } catch {
+      localStorage.removeItem("access_token")
+      this.user = null
+    } finally {
+      this.isInitialized = true
+    }
+  }
 })

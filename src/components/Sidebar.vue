@@ -4,7 +4,7 @@
     <RouterLink to="/Dashboard">🖋 Tattoo Studio Admin</RouterLink>
     <RouterLink to="/calendar">Calendrier</RouterLink>
     <RouterLink to="/clients">Clients</RouterLink>
-    <RouterLink to="/booking">Formulaire</RouterLink>
+    <RouterLink to="/">Formulaire</RouterLink>
   </aside>
 </template>
 

@@ -4,10 +4,12 @@ import CalendarView from '../components/CalendarView.vue'
 import BookingView from '../components/BookingView.vue'
 import AppLogin from '../components/AppLogin.vue'
 import DashboardVue from '../views/Dashboard.vue'
+import { useAuthStore } from "../stores/auth"
 
 const routes = [
   { 
-    path: '/login',
+    path: '/shop-dashboard/login',
+    name: 'login',
     component: AppLogin,
     meta: { hideLayout: true }
   },
@@ -35,7 +37,7 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/booking',
+    path: '/',
     name: 'Booking',
     component: BookingView,
     meta: { hideLayout: true }
@@ -46,10 +48,29 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from) => {
+  const authStore = useAuthStore()
+
+  if (!authStore.isInitialized) {
+    await authStore.initializeAuth()
+  }
+  
   const token = localStorage.getItem("access_token")
-  if (to.meta.requiresAuth && !token) next('/login') 
-  else next()
+
+  if (to.meta.requiresAuth && !authStore.user) {
+    return {
+      name: "Booking",
+      query: {
+        redirect: from.fullPath,
+      },
+    }
+  }
+
+  if (to.name === "login" && authStore.user) {
+    return { name: "dashboard" }
+  }
+  return true
 })
+
 
 export default router
