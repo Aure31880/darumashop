@@ -79,10 +79,10 @@ export default {
       success: false,
       files: [],
       form: {
-        name: '',
-        email: '',
-        phone: '',
-        description: '',
+        name: null,
+        email: null,
+        phone: null,
+        description: null,
         // date: '',
         references: []
       },
@@ -117,24 +117,37 @@ export default {
         formData.append('description', this.form.description)
         // formData.append('date', this.form.date)
 
-        const response = await fetch(import.meta.env.VITE_FORMSPREE, {
-          method: "POST",
-          body: formData,
-           headers: {
-            Accept: 'application/json'
-          }
+        // const response = await fetch(import.meta.env.VITE_FORMSPREE, {
+        //   method: "POST",
+        //   body: formData,
+        //    headers: {
+        //     Accept: 'application/json'
+        //   }
+        // })
+        await this.createClient()
+        toast("Votre message à bien été envoyé !", {
+          "theme": "auto",
+          "type": "success",
+          "position": "bottom-left",
+          "dangerouslyHTMLString": true
         })
+        this.resetForm()
+        // if (response.ok) {
+        //   await this.createClient()
+        //   toast("Votre message à bien été envoyé !", {
+        //     "theme": "auto",
+        //     "type": "success",
+        //     "position": "bottom-left",
+        //     "dangerouslyHTMLString": true
+        //   })
+        //   this.resetForm()
+        // } else {
+        //   const errorText = await response.text()
 
-        if (response.ok) {
-          await this.createClient()
-          toast("Votre message à bien été envoyé !", {
-            "theme": "auto",
-            "type": "success",
-            "position": "bottom-left",
-            "dangerouslyHTMLString": true
-          })
-          this.resetForm()
-        }
+        //   alert(
+        //     `Erreur lors de l'envoi : ${response.status}\n${errorText}`
+        //   )
+        // }
       } catch (err) {
         console.error(err)
       }
@@ -146,8 +159,13 @@ export default {
           email: this.form.email,
           phone: this.form.phone,
         })
+        
         await this.createAppointment(response)
       } catch (err) {
+        console.error(
+        "Erreur création client",
+        err.response?.data || err,
+      )
         console.error('Erreur chargement clients', err)
       }
     },
