@@ -2,13 +2,11 @@
   <div class="app-root min-h-screen">
     <div class="flex justify-between">
       <h1
-        v-if="!$route.meta.hideLayout"
         class="text-3xl font-bold p-4"
-        style="padding: 20px"
-      >
+        style="padding: 20px">
         Daruma Tattoo Shop
-        <span>Dashboard</span>
       </h1>
+      <span v-if="!$route.meta.hideLayout">Dashboard</span>
     </div>
 
     <RouterView v-if="$route.meta.hideLayout" />
