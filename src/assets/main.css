@@ -274,7 +274,7 @@ textarea {
 
 button.btn {
   margin-top: 10px;
-  background: var(--accent);
+  background: green;
   color: white;
   color: var(--text);
   border: none;
@@ -288,7 +288,7 @@ button.btn {
 
 button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(193, 18, 31, 0.35);
+  box-shadow: 0 8px 20px rgba(38, 176, 68, 0.35);
 }
 
 .success {

@@ -3,39 +3,63 @@
     <div class="booking-card">
       <h2>🖋 Prise de rendez-vous</h2>
 
-      <form @submit.prevent="submitBooking">
+      <form
+        @submit.prevent="submitBooking"
+        class="
+          w-full
+          max-w-xl
+          mx-auto
+          px-4 py-6
+          sm:px-6
+          md:p-8">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div>
+            <label for="name" class="block mb-2">Prénom, Nom</label>
+            <input
+              id="name"
+              v-model="form.name"
+              type="text"
+              class="w-full rounded-lg border px-3 py-3"
+            />
+          </div>
 
-        <div class="form-group">
-          <label for="name">Nom, Prénom</label>
-          <input id="name" class="rounded" v-model="form.name" required />
+          <div>
+            <label for="email" class="block mb-2">Email</label>
+            <input
+              id="email"
+              class="w-full rounded-lg border px-3 py-3"
+              v-model="form.email"
+              type="email"
+              required
+            />
+          </div>
+
+          <div>
+            <label for="phone" class="block mb-2">Téléphone</label>
+            <input
+              id="phone"
+              v-model="form.phone"
+              type="tel"
+              class="w-full rounded-lg border px-3 py-3"/>
+          </div>
         </div>
 
         <div class="form-group">
-          <label for="email">Email</label>
-          <input id="email" class="rounded" v-model="form.email" type="email" required />
-        </div>
-
-        <div class="form-group">
-          <label for="phone">Télephone (Optionnel)</label>
-          <input id="phone" class="rounded" v-model="form.phone" />
-        </div>
-
-        <div class="rounded form-group">
-          <label for="description">Description du projet</label>
+          <label class="block mb-2" for="description">Description du projet</label>
           <textarea
             id="description"
-            class="rounded"
+            class="w-full rounded-lg border"
             v-model="form.description"
-            rows="4"
+            rows="8"
             placeholder="Description du projet tattto, idées, taille, emplacement"
-            required
-          />
+            required/>
         </div>
+
         <div class="form-group">
           <label for="description">Images de référence</label>
           <input
             type="file"
-            class="rounded"
+            class="w-full rounded-lg border px-3 py-3"
             multiple
             accept="image/*"
             @change="handleFilesUpload"/>
@@ -55,15 +79,68 @@
           </div>
         </div>
 
-        <!-- <div class="form-group">
-          <label>Date rendez-vous (optionnel)</label>
-          <input v-model="form.date" type="datetime-local" />
-        </div> -->
+        <button
+          type="submit"
+          class="btn mt-6 w-full rounded-lg px-4 py-3 md:w-auto">
+          Envoyer
+        </button>
+      </form>
 
+      <!-- <form @submit.prevent="submitBooking">
+
+        <div class="form-group">
+          <label for="name">Prénom, Nom</label>
+          <input id="name" class="rounded block min-w-0 grow bg-gray-800 py-1.5 pr-3 pl-1 text-base text-white placeholder:text-gray-500" v-model="form.name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" class="rounded block min-w-0 grow bg-gray-800 py-1.5 pr-3 pl-1 text-base text-white placeholder:text-gray-500 focus:outline-none sm:text-sm/6" v-model="form.email" type="email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Télephone (Optionnel)</label>
+          <input id="phone" class="rounded block min-w-0 grow bg-gray-800 py-1.5 pr-3 pl-1 text-base text-white placeholder:text-gray-500 focus:outline-none sm:text-sm/6" v-model="form.phone" />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description du projet</label>
+          <textarea
+            id="description"
+            class="rounded"
+            v-model="form.description"
+            rows="4"
+            placeholder="Description du projet tattto, idées, taille, emplacement"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Images de référence</label>
+          <input
+            type="file"
+            class="rounded form-input block min-w-0 grow bg-gray-800 py-1.5 pr-3 pl-1 text-base text-white placeholder:text-gray-500 focus:outline-none sm:text-sm/6"
+            multiple
+            accept="image/*"
+            @change="handleFilesUpload"/>
+        </div>
+        <div class="preview-container">
+          <div
+            v-for="(image, index) in previews"
+            :key="index"
+            class="preview-card">
+            <img :src="image" alt="preview" />
+            <button
+            type="button"
+              @click.prevent="removeImage(index)"
+              class="btn delete-btn">
+              ×
+            </button>
+          </div>
+        </div>
         <button type="submit" class="btn" style="background: green">
           Valider votre message
         </button>
-      </form>
+      </form> -->
     </div>
   </div>
 </template>
@@ -260,4 +337,7 @@ export default {
 .hidden {
   display: none;
 }
+/* .form-input {
+  width: 100%;
+} */
 </style>
