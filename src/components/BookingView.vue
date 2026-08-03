@@ -337,7 +337,7 @@ export default {
 .hidden {
   display: none;
 }
-/* .form-input {
-  width: 100%;
-} */
+textarea {
+  padding: 5px;
+}
 </style>
