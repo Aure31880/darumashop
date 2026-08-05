@@ -4,6 +4,7 @@ import CalendarView from '../components/CalendarView.vue'
 import BookingView from '../components/BookingView.vue'
 import AppLogin from '../components/AppLogin.vue'
 import DashboardVue from '../views/Dashboard.vue'
+import LandingPage from '../components/LandingPage.vue'
 import { useAuthStore } from "../stores/auth"
 
 const routes = [
@@ -37,10 +38,22 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/',
+    path: '/booking',
     name: 'Booking',
     component: BookingView,
-    meta: { hideLayout: true }
+    meta: { 
+      hideLayout: true,
+      fixedTheme: true
+   }
+  },
+  {
+    path: '/',
+    name: 'Home',
+    component: LandingPage,
+    meta: {
+      hideLayout: true,
+      fixedTheme: true
+    }
   }
 ]
 const router = createRouter({

@@ -6,7 +6,7 @@
         style="padding: 20px">
         Daruma Tattoo Shop
       </h1>
-      <span v-if="!$route.meta.hideLayout">Dashboard</span>
+      <!-- <span v-if="!$route.meta.hideLayout">Dashboard</span> -->
     </div>
 
     <RouterView v-if="$route.meta.hideLayout" />
@@ -14,7 +14,9 @@
     <AdminLayout v-else>
       <RouterView />
     </AdminLayout>
-    <div class="idApp">
+    <div
+      v-if="!$route.meta.hideLayout"
+      class="idApp">
       <span>{{ nameApp }}</span>
       <span>{{ version }}</span>
     </div>

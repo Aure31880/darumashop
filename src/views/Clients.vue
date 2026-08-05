@@ -78,7 +78,107 @@
         </select> 
       </div>
 
-      <section class="detail-grid">
+      <section
+  class="
+    mt-5
+    grid
+    grid-cols-1
+    items-start
+    gap-4
+    md:grid-cols-[1.6fr_1fr]
+    "
+  >
+    <article class="detail-card">
+      <h3>Informations contact:</h3>
+
+      <dl class="information-list">
+        <div class="information-row">
+          <dt>Nom, Prénom:</dt>
+          <dd>{{ selected.client.name }}</dd>
+        </div>
+
+        <div class="information-row">
+          <dt>Email:</dt>
+          <dd>{{ selected.client.email }}</dd>
+        </div>
+
+        <div class="information-row">
+          <dt>Téléphone:</dt>
+          <dd>{{ selected.client.phone || 'Non renseigné' }}</dd>
+        </div>
+      </dl>
+    </article>
+
+    <article class="detail-card description-card">
+      <h3>Informations rendez-vous:</h3>
+
+      <dl class="information-list">
+        <div class="">
+          <dt>Date du rendez-vous:</dt>
+          <dd>{{ formatFullDate(selected.date) }}</dd>
+        </div>
+      </dl>
+    </article>
+
+    <article class="detail-card description-card md:col-span-2">
+      <h3>Description du projet:</h3>
+
+      <div
+        v-if="selected.description"
+        class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words"
+      >
+        {{ selected.description }}
+      </div>
+
+      <p v-else class="empty-text">
+        Aucune description fournie.
+      </p>
+    </article>
+
+    <article class="detail-card description-card col-start-1">
+      <h3>Notes personnelles:</h3>
+      <textarea
+        id="description"
+        class="w-full rounded-lg border"
+        v-model="test"
+        rows="8"
+        placeholder=""
+        required/>
+      <button
+          type="submit"
+          class="btn ml-4"
+          :disabled="!finishedPhotoFiles.length || isUploadingFinishedPhotos">
+          {{ isUploadingFinishedPhotos ? 'Ajout en cours...' : 'Ajouter notes' }}
+        </button>
+      <!-- <div
+        v-if="selected.description"
+        class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words"
+      >
+        {{ selected.description }}
+      </div> -->
+
+      <!-- <p v-else class="empty-text">
+        Aucune description fournie.
+      </p> -->
+    </article>
+
+    <article class="detail-card description-card col-start-2 ">
+      <h3>Zone à tatouer:</h3>
+
+      <div
+        v-if="selected.zone"
+        class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words"
+      >
+        {{ selected.zone }}
+      </div>
+
+      <p v-else class="empty-text">
+        Aucune description fournie.
+      </p>
+    </article>
+  </section>
+
+      <!-- <section class="detail-grid">
         <article class="detail-card">
           <h3>Informations contact:</h3>
 
@@ -96,33 +196,15 @@
               <dt>Téléphone:</dt>
               <dd>{{ selected.client.phone || 'Non renseigné' }}</dd>
             </div>
-
-            <!-- <div class="information-row">
-              <dt>Date du rendez-vous:</dt>
-              <dd>{{ formatFullDate(selected.date) }}</dd>
-            </div> -->
           </dl>
         </article>
 
-        <!-- <article class="detail-card description-card">
-          <h3>Description du projet:</h3>
-
-          <div
-            v-if="selected.description"
-            class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words">
-            {{ selected.description }}
-          </div>
-
-          <p v-else class="empty-text">
-            Aucune description fournie.
-          </p>
-        </article> -->
         <article class="detail-card description-card">
           <h3>Information rendez-vous:</h3>
           <div class="information-row">
-          <!-- Input selected number of seance -->
+          Input selected number of seance -->
           <!-- Input datepicker -->
-            <dt>Date du rendez-vous:</dt>
+            <!-- <dt>Date du rendez-vous:</dt>
             <dd>{{ formatFullDate(selected.date) }}</dd>
           </div>
         </article>
@@ -139,20 +221,7 @@
             Aucune description fournie.
           </p>
         </article>
-        <!-- <article class="detail-card description-card">
-          <h3>Notes personnelles:</h3>
-
-          <div
-            v-if="selected.description"
-            class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words">
-            {{ selected.description }}
-          </div>
-
-          <p v-else class="empty-text">
-            Aucune note prise.
-          </p>
-        </article> -->
-      </section>
+      </section> -->
 
       <section class="attachments-section">
         <div class="section-title">
@@ -288,7 +357,7 @@
 
           <button
             type="submit"
-            class="btn"
+            class="btn ml-4"
             :disabled="!finishedPhotoFiles.length || isUploadingFinishedPhotos">
             {{ isUploadingFinishedPhotos ? 'Envoi en cours...' : 'Ajouter les photos' }}
           </button>
@@ -728,13 +797,13 @@
   margin: 0;
 }
 
-/* .information-row {
+.information-row {
   display: grid;
   grid-template-columns: 135px 1fr;
   gap: 16px;
   padding: 12px 0;
   border-bottom: 1px solid #262931;
-} */
+}
 
 .information-row:last-child {
   border-bottom: 0;
