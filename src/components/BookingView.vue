@@ -98,7 +98,7 @@
             />
           </div>
           <div>
-            <label for="phone" class="block mb-2">Téléphone</label>
+            <label for="phone" class="block mb-2">Téléphone *</label>
             <input
               id="phone"
               v-model="form.phone"
@@ -118,7 +118,7 @@
             required/>
         </div>
         <div class="flex flex-col gap-10 mt-6">
-          <label class="text-xl zone">Zone à tatouer</label>
+          <label class="text-xl zone">Zone à tatouer *</label>
           <div 
             v-for="(label, value) in ZONES_LABELS"
             :key="value"
@@ -142,7 +142,7 @@
           </div>
         </div>
         <div class="form-group mt-6">
-          <label class="block mb-2 text-xl" for="description">Ajouter images de référence</label>
+          <label class="block mb-2 text-xl" for="description">Ajouter images de référence *</label>
           <input
             type="file"
             class="rounded-lg mt-4 border w-64 px-3 py-3"
@@ -150,7 +150,7 @@
             accept="image/*"
             @change="handleFilesUpload"/>
         </div>
-        <div class="preview-container">
+        <div class="preview-container mt-6">
           <div
             v-for="(image, index) in previews"
             :key="index"

@@ -169,11 +169,12 @@
         v-if="selected.zone"
         class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words"
       >
-        {{ selected.zone }}
+      {{ ZONES_LABELS[selected.zone] }}
+        <!-- {{ ZONES_OPTIONS[selected.zone].value }} -->
       </div>
 
       <p v-else class="empty-text">
-        Aucune description fournie.
+        Aucune zone fournie.
       </p>
     </article>
   </section>
@@ -398,6 +399,7 @@
   import api from '../service/api'
   import displayService from '../service/displayService'
   import { STATUS, STATUS_LABELS, STATUS_META, STATUS_OPTIONS } from "../constants/status"
+  import { ZONES_LABELS } from '../constants/zone'
 
   const clients = ref([])
   const rdvs = ref([])
