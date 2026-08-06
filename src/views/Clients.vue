@@ -170,7 +170,6 @@
         class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words"
       >
       {{ ZONES_LABELS[selected.zone] }}
-        <!-- {{ ZONES_OPTIONS[selected.zone].value }} -->
       </div>
 
       <p v-else class="empty-text">

@@ -227,40 +227,38 @@ export default {
         formData.append('email', this.form.email)
         formData.append('phone', this.form.phone)
         formData.append('description', this.form.description)
-        console.log('zone ====>', this.form)
-        // formData.append('date', this.form.date)
 
-        // const response = await fetch(import.meta.env.VITE_FORMSPREE, {
-        //   method: "POST",
-        //   body: formData,
-        //    headers: {
-        //     Accept: 'application/json'
-        //   }
-        // })
-        await this.createClient()
-        toast("Votre message à bien été envoyé !", {
-          "theme": "auto",
-          "type": "success",
-          "position": "bottom-left",
-          "dangerouslyHTMLString": true
+        const response = await fetch(import.meta.env.VITE_FORMSPREE, {
+          method: "POST",
+          body: formData,
+           headers: {
+            Accept: 'application/json'
+          }
         })
-        this.resetForm()
-        // if (response.ok) {
-        //   await this.createClient()
-        //   toast("Votre message à bien été envoyé !", {
-        //     "theme": "auto",
-        //     "type": "success",
-        //     "position": "bottom-left",
-        //     "dangerouslyHTMLString": true
-        //   })
-        //   this.resetForm()
-        // } else {
-        //   const errorText = await response.text()
+        // await this.createClient()
+        // toast("Votre message à bien été envoyé !", {
+        //   "theme": "auto",
+        //   "type": "success",
+        //   "position": "bottom-left",
+        //   "dangerouslyHTMLString": true
+        // })
+        // this.resetForm()
+        if (response.ok) {
+          await this.createClient()
+          toast("Votre message à bien été envoyé !", {
+            "theme": "auto",
+            "type": "success",
+            "position": "bottom-left",
+            "dangerouslyHTMLString": true
+          })
+          this.resetForm()
+        } else {
+          const errorText = await response.text()
 
-        //   alert(
-        //     `Erreur lors de l'envoi : ${response.status}\n${errorText}`
-        //   )
-        // }
+          alert(
+            `Erreur lors de l'envoi : ${response.status}\n${errorText}`
+          )
+        }
       } catch (err) {
         console.error(err)
       }
