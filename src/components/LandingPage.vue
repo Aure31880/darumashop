@@ -150,12 +150,6 @@
 
   const scrollToBookingForm = () => {
     router.push("/booking")
-    // const bookingForm = document.querySelector("#booking-form")
-
-    // bookingForm?.scrollIntoView({
-    //   behavior: "smooth",
-    //   block: "start",
-    // })
   }
 </script>
 
