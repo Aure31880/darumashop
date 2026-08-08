@@ -72,7 +72,7 @@ router.beforeEach(async (to, from) => {
 
   if (to.meta.requiresAuth && !authStore.user) {
     return {
-      name: "Booking",
+      name: "/",
       query: {
         redirect: from.fullPath,
       },

@@ -5,8 +5,8 @@
         class="text-3xl font-bold p-4"
         style="padding: 20px">
         Daruma Tattoo Shop
+        <span v-if="!$route.meta.hideLayout">Dashboard</span>
       </h1>
-      <!-- <span v-if="!$route.meta.hideLayout">Dashboard</span> -->
     </div>
 
     <RouterView v-if="$route.meta.hideLayout" />

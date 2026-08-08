@@ -372,6 +372,7 @@ button:hover {
   margin-bottom: 12px;
 }
 
-label, p, h1, h2 { 
+label, p, h1, h2 {
+  /* font-weight: 700; */
   font-family: font-serif
 }

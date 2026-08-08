@@ -89,7 +89,7 @@
     "
   >
     <article class="detail-card">
-      <h3>Informations contact:</h3>
+      <h3 class="font-bold">Informations contact:</h3>
 
       <dl class="information-list">
         <div class="information-row">
@@ -110,7 +110,7 @@
     </article>
 
     <article class="detail-card description-card">
-      <h3>Informations rendez-vous:</h3>
+      <h3 class="font-bold">Informations rendez-vous:</h3>
 
       <dl class="information-list">
         <div class="">
@@ -121,7 +121,7 @@
     </article>
 
     <article class="detail-card description-card md:col-span-2">
-      <h3>Description du projet:</h3>
+      <h3 class="font-bold">Description du projet:</h3>
 
       <div
         v-if="selected.description"
@@ -136,7 +136,7 @@
     </article>
 
     <article class="detail-card description-card col-start-1">
-      <h3>Notes personnelles:</h3>
+      <h3 class="font-bold">Notes personnelles:</h3>
       <textarea
         id="description"
         class="w-full rounded-lg border"
@@ -163,7 +163,7 @@
     </article>
 
     <article class="detail-card description-card col-start-2 ">
-      <h3>Zone à tatouer:</h3>
+      <h3 class="font-bold">Zone à tatouer:</h3>
 
       <div
         v-if="selected.zone"
@@ -227,7 +227,7 @@
         <div class="section-title">
           <div>
             <p class="detail-label">Références</p>
-            <h3>Images envoyées</h3>
+            <!-- <h3 class="">Images envoyées</h3> -->
           </div>
 
           <span class="attachment-count">
@@ -261,7 +261,7 @@
         <div class="section-title">
           <div>
             <p class="detail-label">Réalisation</p>
-            <h3>Photos du tatouage terminé</h3>
+            <h3 class="font-bold">Photos du tatouage terminé</h3>
           </div>
 
           <span class="attachment-count">
@@ -760,7 +760,7 @@
   margin: 0 0 6px;
   /* color: #8f929a; */
   color: var(--text);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
