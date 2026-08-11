@@ -1,7 +1,6 @@
 <template>
   <div class="booking-page">
     <div class="booking-card">
-      <!-- <h2>🖋 Prise de rendez-vous</h2> -->
       <div
         class="mb-8 mt-6 rounded-2xl border border-zinc-700/50 bg-zinc-900/60 p-6 text-zinc-200 shadow-lg backdrop-blur-sm">
 
@@ -174,7 +173,7 @@
   </div>
 </template>
 <script setup>
-import { onMounted,onBeforeUnmount, reactive, ref } from "vue"
+import { onMounted, onBeforeUnmount, reactive, ref } from "vue"
 import api from '../service/api'
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
@@ -196,21 +195,6 @@ const getInitialForm = () => ({
 })
 
 const form = reactive(getInitialForm())
-
-async function wakeUpServer() {
-  try {
-    await fetch(`${API_URL}/health`, {
-      method: "GET",
-      cache: "no-store",
-    })
-  } catch (error) {
-    console.warn("Le serveur n'est pas encore disponible")
-  }
-}
-
-onMounted(() => {
-  wakeUpServer()
-})
 
 const handleFilesUpload = event => {
   const uploadedFiles = Array.from(event.target.files ?? [])
@@ -343,157 +327,6 @@ onBeforeUnmount(() => {
 })
   
 </script>
-
-// <script>
-// import { reactive } from 'vue'
-// import api from '../service/api'
-// import { toast } from 'vue3-toastify'
-// import 'vue3-toastify/dist/index.css'
-// import { ZONES, ZONES_LABELS, ZONES_OPTIONS } from '../constants/zone'
-
-// export default {
-//   data() {
-//     return {
-//       success: false,
-//       files: [],
-//       form: reactive({
-//         name: null,
-//         email: null,
-//         phone: null,
-//         description: null,
-//         // date: '',
-//         references: [],
-//         zone: null,
-//       }),
-//       previews: [],
-//       ZONES,
-//       ZONES_LABELS,
-//       ZONES_OPTIONS
-//     }
-//   },
-
-//   methods: {
-//     handleFilesUpload(event) {
-//       const uploadedFiles = Array.from(event.target.files)
-//       this.files.push(...uploadedFiles)
-
-//       const newPreviews = uploadedFiles.map(file =>
-//         URL.createObjectURL(file)
-//       )
-//       this.previews.push(...newPreviews)
-//       event.target.value = ''
-//     },
-//     removeImage(index) {
-//       this.files.splice(index, 1);
-
-//       URL.revokeObjectURL(this.previews[index]);
-
-//       this.previews.splice(index, 1);
-//     },
-//     async submitBooking() {
-//       try {
-//         const formData = new FormData()
-//         formData.append('name', this.form.name)
-//         formData.append('email', this.form.email)
-//         formData.append('phone', this.form.phone)
-//         formData.append('description', this.form.description)
-
-//         const response = await fetch(import.meta.env.VITE_FORMSPREE, {
-//           method: "POST",
-//           body: formData,
-//            headers: {
-//             Accept: 'application/json'
-//           }
-//         })
-//         // await this.createClient()
-//         // toast("Votre message à bien été envoyé !", {
-//         //   "theme": "auto",
-//         //   "type": "success",
-//         //   "position": "bottom-left",
-//         //   "dangerouslyHTMLString": true
-//         // })
-//         // this.resetForm()
-//         if (response.ok) {
-//           await this.createClient()
-//           toast("Votre message à bien été envoyé !", {
-//             "theme": "auto",
-//             "type": "success",
-//             "position": "bottom-left",
-//             "dangerouslyHTMLString": true
-//           })
-//           this.resetForm()
-//         } else {
-//           const errorText = await response.text()
-
-//           alert(
-//             `Erreur lors de l'envoi : ${response.status}\n${errorText}`
-//           )
-//         }
-//       } catch (err) {
-//         console.error(err)
-//       }
-//     },
-//     async createClient () {
-//       try {
-//         const response = await api.post('/clients/', {
-//           name: this.form.name,
-//           email: this.form.email,
-//           phone: this.form.phone,
-//         })
-        
-//         await this.createAppointment(response)
-//       } catch (err) {
-//         console.error(
-//         "Erreur création client",
-//         err.response?.data || err,
-//       )
-//         console.error('Erreur chargement clients', err)
-//       }
-//     },
-//     async createAppointment (clientRes) {
-//       try {
-//         const formData = new FormData()
-        
-//         formData.append('client_id', clientRes.data.id)
-//         formData.append('date', this.form.date)
-//         formData.append('description', this.form.description)
-//         formData.append('zone', this.form.zone)
-
-//         for (const file of this.files) {
-//           formData.append('attachments', file)
-//         }
-//         await api.post('/appointments/', formData)
-
-//         this.success = true
-//         this.form = {
-//           name: '',
-//           email: '',
-//           phone: '',
-//           description: '',
-//           date: '',
-//           attachments: [],
-//           zone: null
-//         }
-//         this.files = []
-//         this.previews = []
-//       } catch (err) {
-//         console.error('Erreur chargement clients', err)
-//       }
-//     },
-//     resetForm() {
-//       const keys = Object.keys(this.form)
-//       keys.forEach(key => {
-//         this.form[key] = ''
-//       })
-//     }
-//   },
-//   beforeUnmount() {
-//     this.previews.forEach(url => {
-//       URL.revokeObjectURL(url)
-//     })
-//   }
-// }
-// </script>
 <style scoped>
 .preview-card {
   width: 120px;

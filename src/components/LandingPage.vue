@@ -116,8 +116,25 @@
 </template>
 <script setup>
   import { useRouter } from "vue-router"
+  import { onMounted, onBeforeUnmount, reactive, ref } from "vue"
 
   const router = useRouter()
+  const API_URL = import.meta.env.VITE_API_URL
+
+  async function wakeUpServer() {
+    try {
+      await fetch(`${API_URL}/health`, {
+        method: "GET",
+        cache: "no-store",
+      })
+    } catch (error) {
+      console.warn("Le serveur n'est pas encore disponible")
+    }
+  }
+
+  onMounted(() => {
+    wakeUpServer()
+  })
 
   const steps = [
     {
@@ -151,6 +168,7 @@
   const scrollToBookingForm = () => {
     router.push("/booking")
   }
+
 </script>
 
 <style scoped>
