@@ -1,24 +1,45 @@
 <template>
-  <header class="topbar">
-    <span>
-      Welcome {{ user?.username }} 🤘
-    </span>
-     <button
-      class="rounded-lg p-2 transition hover:bg-zinc-800 dark:hover:bg-zinc-700"
-      @click="toggleTheme">
-      <span v-if="theme === 'dark'">☀️</span>
-      <span v-else>🌙</span>
-    </button>
-    <button class="logout-btn" @click="logout">
-      Déconnexion
-    </button>
-  </header> 
+  <header
+    class="flex items-center justify-between gap-4 px-4 py-3"
+  >
+    <div class="flex items-center">
+      <span class="font-semibold text-zinc-800 dark:text-zinc-100">
+        Welcome {{ user?.username }} 🤘
+      </span>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <Notifications />
+
+      <button
+        class="flex h-10 w-10 items-center justify-center rounded-lg transition
+               hover:bg-zinc-100 dark:hover:bg-zinc-800"
+        @click="toggleTheme"
+      >
+        <span v-if="theme === 'dark'">☀️</span>
+        <span v-else>🌙</span>
+      </button>
+
+      <button
+        class="rounded-lg px-4 py-2 text-sm font-medium
+               text-zinc-700 transition
+               hover:bg-zinc-100
+               dark:text-zinc-200
+               dark:hover:bg-zinc-800"
+        @click="logout"
+      >
+        Déconnexion
+      </button>
+    </div>
+  </header>
 </template>
+
 <script setup>
 import { useRouter } from "vue-router"
 import { storeToRefs } from "pinia"
 import { useAuthStore } from "../stores/auth"
 import { useTheme } from '../composables/useTheme'
+import Notifications from '../components/Notifications.vue'
 
   const { theme, toggleTheme } = useTheme()
   const router = useRouter()

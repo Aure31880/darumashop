@@ -25,18 +25,24 @@ const routes = [
     component: CalendarView,
     meta: { requiresAuth: true }
   },
-  { 
-    path: '/clients',
-    component: Client,
-    meta: { requiresAuth: true }
-  },
   {
-    path: '/client/:id',
-    name: 'Client',
+    path: '/clients/:id?',
+    name: 'Clients',
     component: Client,
-    props: true,
     meta: { requiresAuth: true }
   },
+  // { 
+  //   path: '/clients',
+  //   component: Client,
+  //   meta: { requiresAuth: true }
+  // },
+  // {
+  //   path: '/client/:id',
+  //   name: 'Client',
+  //   component: Client,
+  //   props: true,
+  //   meta: { requiresAuth: true }
+  // },
   {
     path: '/booking',
     name: 'Booking',

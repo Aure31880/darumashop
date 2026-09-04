@@ -61,7 +61,7 @@
       <div class="detail-header">
         <div>
           <p class="detail-label">Rendez-vous client</p>
-          <h2>{{ selected.client.name }}</h2>
+          <!-- <h2>{{ selected.client.name }}</h2> -->
         </div>
         <select
           :value="selected.status"
@@ -392,13 +392,16 @@
 </template>
 
 <script setup>
-  import { computed, onMounted, ref } from 'vue'
+  import { computed, onMounted, ref, watch } from 'vue'
 
   import AdminLayout from '../layouts/AdminLayout.vue'
   import api from '../service/api'
   import displayService from '../service/displayService'
   import { STATUS, STATUS_LABELS, STATUS_META, STATUS_OPTIONS } from "../constants/status"
   import { ZONES_LABELS } from '../constants/zone'
+  import { useRoute } from 'vue-router'
+
+  const route = useRoute()
 
   const clients = ref([])
   const rdvs = ref([])
@@ -430,19 +433,41 @@
     ) ?? []
   })
 
+  function selectAppointmentFromRoute() {
+    const appointmentId = Number(route.params.id)
+
+    if (!appointmentId) {
+      return
+    }
+
+    const appointment = rdvs.value.find(
+      rdv => rdv.id === appointmentId
+    )
+
+    if (appointment) {
+      selectClient(appointment)
+    }
+  }
+
   onMounted(async () => {
     try {
       const response = await api.get('/appointments/')
       rdvs.value = response.data
+      selectAppointmentFromRoute()
     } catch (error) {
       console.error('Erreur chargement des rendez-vous', error)
     }
   })
 
+  watch(
+    () => route.params.id,
+    () => {
+      selectAppointmentFromRoute()
+    }
+  )
+
   function selectClient(rdv) {
     selected.value = rdv
-    // console.log(STATUS_LABELS[selected.value.status])
-    console.log(STATUS_META[selected.value.status.badgeClass])
   }
 
   function openImage(attachment) {
@@ -561,6 +586,7 @@
     }
   }
   async function deleteClient() {
+    console.log('selected.value =====>', selected.value)
     try {
       await api.delete(`/clients/${selected.value?.client?.id}`)
       rdvs.value = rdvs.value.filter(
