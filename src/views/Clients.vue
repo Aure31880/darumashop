@@ -12,11 +12,8 @@
           :key="rdv.id"
           type="button"
           :class="[{ active: selected?.id === rdv.id }, 'btn client-item']"
-          @click="selectClient(rdv)">
-          <!-- <div class="client-avatar">
-            {{ getInitials(rdv.client.name) }}
-          </div> -->
-
+          @click="selectClient(rdv)"
+        >
           <div class="client-summary">
             <div class="client-name">
               {{ rdv.client.name }}
@@ -30,30 +27,20 @@
               <!-- {{ formatDate(rdv.date) }} -->
             </div>
           </div>
-          <span
-            :class="[
-              'status-badge',
-              STATUS_META[rdv.status].badgeClass
-            ]">
+          <span :class="['status-badge', STATUS_META[rdv.status].badgeClass]">
             {{ STATUS_META[rdv.status].label }}
           </span>
         </button>
       </div>
     </aside>
-    
+
     <main v-if="selected" class="client-detail">
       <div class="menu-container">
-        <button
-          class="menu-btn"
-          @click="showMenu = !showMenu">
+        <button class="menu-btn" @click="showMenu = !showMenu">
           <i class="fa-solid fa-bars"></i>
         </button>
-        <div
-          v-if="showMenu"
-          class="menu-dropdown">
-          <button
-            class="menu-item danger"
-            @click="deleteClient">
+        <div v-if="showMenu" class="menu-dropdown">
+          <button class="menu-item danger" @click="deleteClient">
             Supprimer le client et le rdv
           </button>
         </div>
@@ -65,118 +52,103 @@
         </div>
         <select
           :value="selected.status"
-          :class="[
-            'rounded status-select status-badge',
-            STATUS_META[selected.status]?.badgeClass]"
-          @change="updateAppointmentStatus($event.target.value)">
-          <option
-            v-for="status in STATUS_OPTIONS"
-            :key="status.value"
-            :value="status.value">
+          :class="['rounded status-select status-badge', STATUS_META[selected.status]?.badgeClass]"
+          @change="updateAppointmentStatus($event.target.value)"
+        >
+          <option v-for="status in STATUS_OPTIONS" :key="status.value" :value="status.value">
             {{ status.label }}
           </option>
-        </select> 
+        </select>
       </div>
 
-      <section
-  class="
-    mt-5
-    grid
-    grid-cols-1
-    items-start
-    gap-4
-    md:grid-cols-[1.6fr_1fr]
-    "
-  >
-    <article class="detail-card">
-      <h3 class="font-bold">Informations contact:</h3>
+      <section class="mt-5 grid grid-cols-1 items-start gap-4 md:grid-cols-[1.6fr_1fr]">
+        <article class="detail-card">
+          <h3 class="font-bold">Informations contact:</h3>
 
-      <dl class="information-list">
-        <div class="information-row">
-          <dt>Nom, Prénom:</dt>
-          <dd>{{ selected.client.name }}</dd>
-        </div>
+          <dl class="information-list">
+            <div class="information-row">
+              <dt>Nom, Prénom:</dt>
+              <dd>{{ selected.client.name }}</dd>
+            </div>
 
-        <div class="information-row">
-          <dt>Email:</dt>
-          <dd>{{ selected.client.email }}</dd>
-        </div>
+            <div class="information-row">
+              <dt>Email:</dt>
+              <dd>{{ selected.client.email }}</dd>
+            </div>
 
-        <div class="information-row">
-          <dt>Téléphone:</dt>
-          <dd>{{ selected.client.phone || 'Non renseigné' }}</dd>
-        </div>
-      </dl>
-    </article>
+            <div class="information-row">
+              <dt>Téléphone:</dt>
+              <dd>{{ selected.client.phone || 'Non renseigné' }}</dd>
+            </div>
+          </dl>
+        </article>
 
-    <article class="detail-card description-card">
-      <h3 class="font-bold">Informations rendez-vous:</h3>
+        <article class="detail-card description-card">
+          <h3 class="font-bold">Informations rendez-vous:</h3>
 
-      <dl class="information-list">
-        <div class="">
-          <dt>Date du rendez-vous:</dt>
-          <dd>{{ formatFullDate(selected.date) }}</dd>
-        </div>
-      </dl>
-    </article>
+          <dl class="information-list">
+            <div class="">
+              <dt>Date du rendez-vous:</dt>
+              <dd>{{ formatFullDate(selected.date) }}</dd>
+            </div>
+          </dl>
+        </article>
 
-    <article class="detail-card description-card md:col-span-2">
-      <h3 class="font-bold">Description du projet:</h3>
+        <article class="detail-card description-card md:col-span-2">
+          <h3 class="font-bold">Description du projet:</h3>
 
-      <div
-        v-if="selected.description"
-        class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words"
-      >
-        {{ selected.description }}
-      </div>
+          <div
+            v-if="selected.description"
+            class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words"
+          >
+            {{ selected.description }}
+          </div>
 
-      <p v-else class="empty-text">
-        Aucune description fournie.
-      </p>
-    </article>
+          <p v-else class="empty-text">Aucune description fournie.</p>
+        </article>
 
-    <article class="detail-card description-card col-start-1">
-      <h3 class="font-bold">Notes personnelles:</h3>
-      <textarea
-        id="description"
-        class="w-full rounded-lg border"
-        v-model="test"
-        rows="8"
-        placeholder=""
-        required/>
-      <button
-          type="submit"
-          class="btn ml-4"
-          :disabled="!finishedPhotoFiles.length || isUploadingFinishedPhotos">
-          {{ isUploadingFinishedPhotos ? 'Ajout en cours...' : 'Ajouter notes' }}
-        </button>
-      <!-- <div
+        <article class="detail-card description-card col-start-1">
+          <h3 class="font-bold">Notes personnelles:</h3>
+          <textarea
+            id="description"
+            class="w-full rounded-lg border"
+            v-model="test"
+            rows="8"
+            placeholder=""
+            required
+          />
+          <button
+            type="submit"
+            class="btn ml-4"
+            :disabled="!finishedPhotoFiles.length || isUploadingFinishedPhotos"
+          >
+            {{ isUploadingFinishedPhotos ? 'Ajout en cours...' : 'Ajouter notes' }}
+          </button>
+          <!-- <div
         v-if="selected.description"
         class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words"
       >
         {{ selected.description }}
       </div> -->
 
-      <!-- <p v-else class="empty-text">
+          <!-- <p v-else class="empty-text">
         Aucune description fournie.
       </p> -->
-    </article>
+        </article>
 
-    <article class="detail-card description-card col-start-2 ">
-      <h3 class="font-bold">Zone à tatouer:</h3>
+        <article class="detail-card description-card col-start-2">
+          <h3 class="font-bold">Zone à tatouer:</h3>
 
-      <div
-        v-if="selected.zone"
-        class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words"
-      >
-      {{ ZONES_LABELS[selected.zone] }}
-      </div>
+          <div
+            v-if="selected.zone"
+            class="max-h-64 overflow-y-auto whitespace-pre-wrap break-words"
+          >
+            {{ ZONES_LABELS[selected.zone] }}
+          </div>
 
-      <p v-else class="empty-text">
-        Aucune zone fournie.
-      </p>
-    </article>
-  </section>
+          <p v-else class="empty-text">Aucune zone fournie.</p>
+        </article>
+      </section>
 
       <!-- <section class="detail-grid">
         <article class="detail-card">
@@ -203,8 +175,8 @@
           <h3>Information rendez-vous:</h3>
           <div class="information-row">
           Input selected number of seance -->
-          <!-- Input datepicker -->
-            <!-- <dt>Date du rendez-vous:</dt>
+      <!-- Input datepicker -->
+      <!-- <dt>Date du rendez-vous:</dt>
             <dd>{{ formatFullDate(selected.date) }}</dd>
           </div>
         </article>
@@ -236,25 +208,23 @@
           </span>
         </div>
 
-        <div
-          v-if="referenceAttachments?.length"
-          class="attachments-grid">
+        <div v-if="referenceAttachments?.length" class="attachments-grid">
           <button
             v-for="attachment in referenceAttachments"
             :key="attachment.id"
             type="button"
             class="btn attachment-card"
-            @click="openImage(attachment)">
+            @click="openImage(attachment)"
+          >
             <img
               :src="getAttachmentUrl(attachment.file_path)"
               :alt="attachment.filename"
-              loading="lazy">
+              loading="lazy"
+            />
           </button>
         </div>
 
-        <div v-else class="empty-attachments">
-          Aucune image envoyée pour ce rendez-vous.
-        </div>
+        <div v-else class="empty-attachments">Aucune image envoyée pour ce rendez-vous.</div>
       </section>
 
       <section class="attachments-section finished-tattoo-section">
@@ -270,29 +240,27 @@
           </span>
         </div>
 
-        <div
-          v-if="finishedAttachments.length"
-          class="attachments-grid">
+        <div v-if="finishedAttachments.length" class="attachments-grid">
           <article
             v-for="attachment in finishedAttachments"
             :key="attachment.id"
-            class="finished-photo-card">
+            class="finished-photo-card"
+          >
             <!-- <button
               class="delete-photo-button"
               @click.stop="deleteFinishedPhoto(attachment)">
               ×
             </button> -->
-            <div
-              class="attachment-card"
-              @click="openImage(attachment)">
-
+            <div class="attachment-card" @click="openImage(attachment)">
               <img
                 :src="getAttachmentUrl(attachment.file_path)"
-                :alt="attachment.original_filename || attachment.filename">
+                :alt="attachment.original_filename || attachment.filename"
+              />
               <div class="attachment-overlay">
                 <button
                   class="btn delete-photo-button"
-                  @click.stop="deleteFinishedPhoto(attachment)">
+                  @click.stop="deleteFinishedPhoto(attachment)"
+                >
                   ×
                 </button>
               </div>
@@ -300,12 +268,8 @@
           </article>
         </div>
 
-        <div v-else class="empty-attachments">
-          Aucune photo finale ajoutée.
-        </div>
-        <form
-          class="finished-photo-form"
-          @submit.prevent="uploadFinishedPhotos">
+        <div v-else class="empty-attachments">Aucune photo finale ajoutée.</div>
+        <form class="finished-photo-form" @submit.prevent="uploadFinishedPhotos">
           <label class="upload-field">
             <span>Ajouter les photos finales </span>
             <input
@@ -313,24 +277,17 @@
               class="rounded upload-input"
               accept="image/jpeg,image/png,image/webp"
               multiple
-              @change="handleFinishedPhotoSelection">
+              @change="handleFinishedPhotoSelection"
+            />
           </label>
-          <div
-            v-if="finishedPhotoPreviews.length"
-            class="attachments-grid upload-previews">
+          <div v-if="finishedPhotoPreviews.length" class="attachments-grid upload-previews">
             <div
               v-for="(preview, index) in finishedPhotoPreviews"
               :key="preview.url"
-              class="upload-preview">
-              <img
-                :src="preview.url"
-                :alt="preview.name">
-              <button
-                type="button"
-                class="btn"
-                @click="removeFinishedPhoto(index)">
-                Retirer
-              </button>
+              class="upload-preview"
+            >
+              <img :src="preview.url" :alt="preview.name" />
+              <button type="button" class="btn" @click="removeFinishedPhoto(index)">Retirer</button>
             </div>
           </div>
 
@@ -358,7 +315,8 @@
           <button
             type="submit"
             class="btn ml-4"
-            :disabled="!finishedPhotoFiles.length || isUploadingFinishedPhotos">
+            :disabled="!finishedPhotoFiles.length || isUploadingFinishedPhotos"
+          >
             {{ isUploadingFinishedPhotos ? 'Envoi en cours...' : 'Ajouter les photos' }}
           </button>
         </form>
@@ -372,276 +330,248 @@
       </div>
     </main>
 
-    <div
-      v-if="previewImage"
-      class="image-modal"
-      @click.self="previewImage = null">
+    <div v-if="previewImage" class="image-modal" @click.self="previewImage = null">
       <button
         type="button"
         class="btn modal-close"
         aria-label="Fermer"
-        @click="previewImage = null">
+        @click="previewImage = null"
+      >
         ×
       </button>
 
-      <img
-        :src="getAttachmentUrl(previewImage.file_path)"
-        :alt="previewImage.filename">
+      <img :src="getAttachmentUrl(previewImage.file_path)" :alt="previewImage.filename" />
     </div>
   </div>
 </template>
 
 <script setup>
-  import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
-  import AdminLayout from '../layouts/AdminLayout.vue'
-  import api from '../service/api'
-  import displayService from '../service/displayService'
-  import { STATUS, STATUS_LABELS, STATUS_META, STATUS_OPTIONS } from "../constants/status"
-  import { ZONES_LABELS } from '../constants/zone'
-  import { useRoute } from 'vue-router'
+import AdminLayout from '../layouts/AdminLayout.vue'
+import api from '../service/api'
+import displayService from '../service/displayService'
+import { STATUS, STATUS_LABELS, STATUS_META, STATUS_OPTIONS } from '../constants/status'
+import { ZONES_LABELS } from '../constants/zone'
+import { useRoute } from 'vue-router'
 
-  const route = useRoute()
+const route = useRoute()
 
-  const clients = ref([])
-  const rdvs = ref([])
-  const selected = ref(null)
-  const previewImage = ref(null)
+const clients = ref([])
+const rdvs = ref([])
+const selected = ref(null)
+const previewImage = ref(null)
 
-  const finishedPhotoFiles = ref([])
-  const finishedPhotoPreviews = ref([])
-  const finishedPhotoCaption = ref('')
-  const publishAuthorized = ref(false)
-  const isUploadingFinishedPhotos = ref(false)
-  const showMenu = ref(false)
+const finishedPhotoFiles = ref([])
+const finishedPhotoPreviews = ref([])
+const finishedPhotoCaption = ref('')
+const publishAuthorized = ref(false)
+const isUploadingFinishedPhotos = ref(false)
+const showMenu = ref(false)
 
-  const referenceAttachments = computed(() => {
-    return selected.value?.attachments?.filter(
-      attachment => attachment.category === 'reference'
-    ) ?? []
-  })
+const referenceAttachments = computed(() => {
+  return (
+    selected.value?.attachments?.filter((attachment) => attachment.category === 'reference') ?? []
+  )
+})
 
-  const finishedAttachments = computed(() => {
-    return selected.value?.attachments?.filter(
-      attachment => attachment.category === 'finished'
-    ) ?? []
-  })
+const finishedAttachments = computed(() => {
+  return (
+    selected.value?.attachments?.filter((attachment) => attachment.category === 'finished') ?? []
+  )
+})
 
-  const followUpAttachments = computed(() => {
-    return selected.value?.attachments?.filter(
-      attachment => attachment.category === 'follow_up'
-    ) ?? []
-  })
+const followUpAttachments = computed(() => {
+  return (
+    selected.value?.attachments?.filter((attachment) => attachment.category === 'follow_up') ?? []
+  )
+})
 
-  function selectAppointmentFromRoute() {
-    const appointmentId = Number(route.params.id)
+function selectAppointmentFromRoute() {
+  const appointmentId = Number(route.params.id)
 
-    if (!appointmentId) {
-      return
+  if (!appointmentId) {
+    return
+  }
+
+  const appointment = rdvs.value.find((rdv) => rdv.id === appointmentId)
+
+  if (appointment) {
+    selectClient(appointment)
+  }
+}
+
+onMounted(async () => {
+  try {
+    const response = await api.get('/appointments/')
+    rdvs.value = response.data
+    selectAppointmentFromRoute()
+  } catch (error) {
+    console.error('Erreur chargement des rendez-vous', error)
+  }
+})
+
+watch(
+  () => route.params.id,
+  () => {
+    selectAppointmentFromRoute()
+  },
+)
+
+function selectClient(rdv) {
+  selected.value = rdv
+}
+
+function openImage(attachment) {
+  previewImage.value = attachment
+}
+
+function closeImage() {
+  previewImage.value = null
+}
+
+function getInitials(name) {
+  return displayService.getInitials(name)
+}
+
+function formatDate(date) {
+  return displayService.formatDate(date)
+}
+
+function formatFullDate(date) {
+  return displayService.formatFullDate(date)
+}
+
+function getAttachmentUrl(filePath) {
+  return displayService.getAttachmentUrl(filePath)
+}
+
+function handleFinishedPhotoSelection(event) {
+  clearFinishedPhotoPreviews()
+
+  const files = Array.from(event.target.files ?? [])
+
+  finishedPhotoFiles.value = files
+
+  finishedPhotoPreviews.value = files.map((file) => ({
+    name: file.name,
+    url: URL.createObjectURL(file),
+  }))
+}
+
+function removeFinishedPhoto(index) {
+  const preview = finishedPhotoPreviews.value[index]
+
+  if (preview) {
+    URL.revokeObjectURL(preview.url)
+  }
+
+  finishedPhotoFiles.value.splice(index, 1)
+  finishedPhotoPreviews.value.splice(index, 1)
+}
+
+function clearFinishedPhotoPreviews() {
+  for (const preview of finishedPhotoPreviews.value) {
+    URL.revokeObjectURL(preview.url)
+  }
+
+  finishedPhotoPreviews.value = []
+}
+async function uploadFinishedPhotos() {
+  if (!selected.value?.id || !finishedPhotoFiles.value.length) {
+    return
+  }
+
+  isUploadingFinishedPhotos.value = true
+
+  try {
+    const formData = new FormData()
+
+    for (const file of finishedPhotoFiles.value) {
+      formData.append('attachments', file)
     }
 
-    const appointment = rdvs.value.find(
-      rdv => rdv.id === appointmentId
+    formData.append('caption', finishedPhotoCaption.value)
+
+    formData.append('publish_authorized', String(publishAuthorized.value))
+
+    const response = await api.post(`/appointments/${selected.value.id}/attachments`, formData)
+
+    selected.value.attachments.push(...response.data)
+
+    clearFinishedPhotoPreviews()
+    finishedPhotoFiles.value = []
+    finishedPhotoCaption.value = ''
+    publishAuthorized.value = false
+  } catch (error) {
+    console.error('Erreur lors de l’envoi des photos finales', error)
+  } finally {
+    isUploadingFinishedPhotos.value = false
+  }
+}
+
+async function deleteFinishedPhoto(attachment) {
+  if (!confirm('Supprimer cette photo ?')) {
+    return
+  }
+
+  try {
+    await api.delete(`/attachments/${attachment.id}`)
+
+    selected.value.attachments = selected.value.attachments.filter(
+      (item) => item.id !== attachment.id,
     )
+  } catch (error) {
+    console.error(error)
+  }
+}
+async function deleteClient() {
+  console.log('selected.value =====>', selected.value)
+  try {
+    await api.delete(`/clients/${selected.value?.client?.id}`)
+    rdvs.value = rdvs.value.filter((rdv) => rdv.id !== selected.value.id)
+
+    selected.value = null
+    showMenu.value = false
+  } catch (error) {
+    console.log('Error delete client', error)
+  }
+}
+
+const updateAppointmentStatus = async (newStatus) => {
+  if (!selected.value) {
+    return
+  }
+
+  const appointmentId = selected.value.id
+  const previousStatus = selected.value.status
+
+  console.log('Ancien statut :', previousStatus)
+  console.log('Nouveau statut :', newStatus)
+
+  try {
+    const response = await api.patch(`/appointments/${appointmentId}/status`, {
+      status: newStatus,
+    })
+
+    const updatedStatus = response.data.status
+
+    selected.value.status = updatedStatus
+
+    const appointment = rdvs.value.find((rdv) => rdv.id === appointmentId)
 
     if (appointment) {
-      selectClient(appointment)
+      appointment.status = updatedStatus
     }
+  } catch (error) {
+    selected.value.status = previousStatus
+
+    console.error('Erreur lors de la mise à jour du statut', error)
   }
-
-  onMounted(async () => {
-    try {
-      const response = await api.get('/appointments/')
-      rdvs.value = response.data
-      selectAppointmentFromRoute()
-    } catch (error) {
-      console.error('Erreur chargement des rendez-vous', error)
-    }
-  })
-
-  watch(
-    () => route.params.id,
-    () => {
-      selectAppointmentFromRoute()
-    }
-  )
-
-  function selectClient(rdv) {
-    selected.value = rdv
-  }
-
-  function openImage(attachment) {
-    previewImage.value = attachment
-  }
-
-  function closeImage() {
-    previewImage.value = null
-  }
-
-  function getInitials(name) {
-    return displayService.getInitials(name)
-  }
-
-  function formatDate(date) {
-    return displayService.formatDate(date)
-  }
-
-  function formatFullDate(date) {
-    return displayService.formatFullDate(date)
-  }
-
-  function getAttachmentUrl(filePath) {
-    return displayService.getAttachmentUrl(filePath)
-  }
-
-  function handleFinishedPhotoSelection(event) {
-    clearFinishedPhotoPreviews()
-
-    const files = Array.from(event.target.files ?? [])
-
-    finishedPhotoFiles.value = files
-
-    finishedPhotoPreviews.value = files.map(file => ({
-      name: file.name,
-      url: URL.createObjectURL(file),
-    }))
-  }
-
-  function removeFinishedPhoto(index) {
-    const preview = finishedPhotoPreviews.value[index]
-
-    if (preview) {
-      URL.revokeObjectURL(preview.url)
-    }
-
-    finishedPhotoFiles.value.splice(index, 1)
-    finishedPhotoPreviews.value.splice(index, 1)
-  }
-
-  function clearFinishedPhotoPreviews() {
-    for (const preview of finishedPhotoPreviews.value) {
-      URL.revokeObjectURL(preview.url)
-    }
-
-    finishedPhotoPreviews.value = []
-  }
-  async function uploadFinishedPhotos() {
-    if (!selected.value?.id || !finishedPhotoFiles.value.length) {
-      return
-    }
-
-    isUploadingFinishedPhotos.value = true
-
-    try {
-      const formData = new FormData()
-
-      for (const file of finishedPhotoFiles.value) {
-        formData.append('attachments', file)
-      }
-
-      formData.append(
-        'caption',
-        finishedPhotoCaption.value
-      )
-
-      formData.append(
-        'publish_authorized',
-        String(publishAuthorized.value)
-      )
-
-      const response = await api.post(
-        `/appointments/${selected.value.id}/attachments`,
-        formData
-      )
-
-      selected.value.attachments.push(...response.data)
-
-      clearFinishedPhotoPreviews()
-      finishedPhotoFiles.value = []
-      finishedPhotoCaption.value = ''
-      publishAuthorized.value = false
-    } catch (error) {
-      console.error(
-        'Erreur lors de l’envoi des photos finales',
-        error
-      )
-    } finally {
-      isUploadingFinishedPhotos.value = false
-    }
-  }
-
-  async function deleteFinishedPhoto(attachment) {
-    if (!confirm('Supprimer cette photo ?')) {
-      return
-    }
-
-    try {
-      await api.delete(`/attachments/${attachment.id}`)
-
-      selected.value.attachments = selected.value.attachments.filter(
-        item => item.id !== attachment.id
-      )
-    } catch (error) {
-      console.error(error)
-    }
-  }
-  async function deleteClient() {
-    console.log('selected.value =====>', selected.value)
-    try {
-      await api.delete(`/clients/${selected.value?.client?.id}`)
-      rdvs.value = rdvs.value.filter(
-        rdv => rdv.id !== selected.value.id,
-      )
-
-      selected.value = null
-      showMenu.value = false
-    } catch (error) {
-      console.log('Error delete client', error)
-    }
-  }
-
-  const updateAppointmentStatus = async (newStatus) => {
-    if (!selected.value) {
-      return
-    }
-
-    const appointmentId = selected.value.id
-    const previousStatus = selected.value.status
-
-    console.log("Ancien statut :", previousStatus)
-    console.log("Nouveau statut :", newStatus)
-
-    try {
-      const response = await api.patch(
-        `/appointments/${appointmentId}/status`,
-        {
-          status: newStatus,
-        },
-      )
-
-      const updatedStatus = response.data.status
-
-      selected.value.status = updatedStatus
-
-      const appointment = rdvs.value.find(
-        rdv => rdv.id === appointmentId,
-      )
-
-      if (appointment) {
-        appointment.status = updatedStatus
-      }
-    } catch (error) {
-      selected.value.status = previousStatus
-
-      console.error(
-        "Erreur lors de la mise à jour du statut",
-        error,
-      )
-    }
-  }
-  const openDeleteDialog = () => {
-    showMenu.value = false
-  }
+}
+const openDeleteDialog = () => {
+  showMenu.value = false
+}
 </script>
 <style scoped>
 .clients-layout {
@@ -970,7 +900,7 @@ button:hover {
 
 .menu-container {
   position: relative;
-  margin-bottom: 15px
+  margin-bottom: 15px;
 }
 
 .menu-btn {
@@ -994,7 +924,7 @@ button:hover {
   /* border: 1px solid #e5e7eb;
   border-radius: 8px; */
 
-  box-shadow: 0 8px 20px rgba(0,0,0,.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 
   z-index: 100;
 }
@@ -1011,7 +941,7 @@ button:hover {
 
 .menu-item.danger {
   background: #dc2626;
-  color: #FFFFFf;
+  color: #ffffff;
 }
 .upload-input {
   width: 112px;
@@ -1034,7 +964,7 @@ button:hover {
   .finished-photo-card {
     position: relative;
   }
-  
+
   .delete-photo-button {
     position: absolute;
     top: 6px;
@@ -1060,7 +990,6 @@ button:hover {
     justify-content: center;
 
     transition: 0.2s ease;
-
   }
   .delete-photo-button:hover {
     transform: scale(1.1);

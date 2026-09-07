@@ -3,13 +3,9 @@
     <div class="project-presentation__container">
       <!-- Introduction -->
       <header class="project-presentation__header">
-        <p class="project-presentation__eyebrow">
-          Projet personnalisé
-        </p>
+        <p class="project-presentation__eyebrow">Projet personnalisé</p>
 
-        <h2 class="project-presentation__title">
-          Réserver un projet de tatouage
-        </h2>
+        <h2 class="project-presentation__title">Réserver un projet de tatouage</h2>
 
         <div class="project-presentation__divider"></div>
 
@@ -18,9 +14,8 @@
             Tatouage réaliste noir et gris et flash, Plaisance-du-touch.
           </p>
           <p>
-            Chaque projet est conçu pour s'intégrer naturellement au corps,
-            avec une attention particulière portée à la structure, aux volumes
-            et à la longévité.
+            Chaque projet est conçu pour s'intégrer naturellement au corps, avec une attention
+            particulière portée à la structure, aux volumes et à la longévité.
           </p>
         </div>
       </header>
@@ -28,21 +23,13 @@
       <!-- Étapes -->
       <div class="project-presentation__process">
         <div class="project-presentation__section-heading">
-          <p class="project-presentation__section-number">
-            01
-          </p>
+          <p class="project-presentation__section-number">01</p>
 
-          <h3>
-            Comment réserver
-          </h3>
+          <h3>Comment réserver</h3>
         </div>
 
         <div class="project-presentation__steps">
-          <article
-            v-for="step in steps"
-            :key="step.number"
-            class="project-step"
-          >
+          <article v-for="step in steps" :key="step.number" class="project-step">
             <div class="project-step__number">
               {{ step.number }}
             </div>
@@ -56,10 +43,7 @@
                 {{ step.description }}
               </p>
 
-              <p
-                v-if="step.secondaryText"
-                class="project-step__secondary"
-              >
+              <p v-if="step.secondaryText" class="project-step__secondary">
                 {{ step.secondaryText }}
               </p>
             </div>
@@ -70,44 +54,26 @@
       <!-- Appel à l'action -->
       <div class="project-presentation__cta">
         <div class="project-presentation__section-heading">
-          <p class="project-presentation__section-number">
-            02
-          </p>
+          <p class="project-presentation__section-number">02</p>
 
-          <h3>
-            Démarrer mon projet
-          </h3>
+          <h3>Démarrer mon projet</h3>
         </div>
 
         <div class="project-presentation__cta-content">
-          <p>
-            Cliquez ci-dessous pour déposer votre projet.
-          </p>
+          <p>Cliquez ci-dessous pour déposer votre projet.</p>
 
-          <button
-            type="button"
-            class="project-presentation__button"
-            @click="scrollToBookingForm"
-          >
+          <button type="button" class="project-presentation__button" @click="scrollToBookingForm">
             <span>Soumettre un projet</span>
 
-            <span
-              class="project-presentation__button-arrow"
-              aria-hidden="true"
-            >
-              ↘
-            </span>
+            <span class="project-presentation__button-arrow" aria-hidden="true"> ↘ </span>
           </button>
 
           <div class="project-presentation__cta-details">
             <p>
-              Le formulaire vous permet de décrire votre idée en détail et
-              d’envoyer vos références.
+              Le formulaire vous permet de décrire votre idée en détail et d’envoyer vos références.
             </p>
 
-            <p>
-              Chaque demande est étudiée personnellement.
-            </p>
+            <p>Chaque demande est étudiée personnellement.</p>
           </div>
         </div>
       </div>
@@ -115,60 +81,55 @@
   </section>
 </template>
 <script setup>
-  import { useRouter } from "vue-router"
-  import { onMounted, onBeforeUnmount, reactive, ref } from "vue"
+import { useRouter } from 'vue-router'
+import { onMounted, onBeforeUnmount, reactive, ref } from 'vue'
 
-  const router = useRouter()
-  const API_URL = import.meta.env.VITE_API_URL
+const router = useRouter()
+const API_URL = import.meta.env.VITE_API_URL
 
-  async function wakeUpServer() {
-    try {
-      await fetch(`${API_URL}/health`, {
-        method: "GET",
-        cache: "no-store",
-      })
-    } catch (error) {
-      console.warn("Le serveur n'est pas encore disponible")
-    }
+async function wakeUpServer() {
+  try {
+    await fetch(`${API_URL}/health`, {
+      method: 'GET',
+      cache: 'no-store',
+    })
+  } catch (error) {
+    console.warn("Le serveur n'est pas encore disponible")
   }
+}
 
-  onMounted(() => {
-    wakeUpServer()
-  })
+onMounted(() => {
+  wakeUpServer()
+})
 
-  const steps = [
-    {
-      number: "01",
-      title: "Demande de projet",
-      description:
-        "Remplissez le formulaire avec votre idée et vos références.",
-    },
-    {
-      number: "02",
-      title: "Appel de consultation",
-      description:
-        "Un échange permet de définir la composition, la taille et le placement.",
-    },
-    {
-      number: "03",
-      title: "Design et planification",
-      description:
-        "Chaque projet est unique et conçu sur-mesure.",
-      secondaryText:
-        "Le tarif dépend de la taille et de la complexité du projet.",
-    },
-    {
-      number: "04",
-      title: "Séances de tatouage",
-      description:
-        "Les grands projets sont réalisés sur plusieurs séances pour respecter la peau et garantir une qualité durable.",
-    },
-  ]
+const steps = [
+  {
+    number: '01',
+    title: 'Demande de projet',
+    description: 'Remplissez le formulaire avec votre idée et vos références.',
+  },
+  {
+    number: '02',
+    title: 'Appel de consultation',
+    description: 'Un échange permet de définir la composition, la taille et le placement.',
+  },
+  {
+    number: '03',
+    title: 'Design et planification',
+    description: 'Chaque projet est unique et conçu sur-mesure.',
+    secondaryText: 'Le tarif dépend de la taille et de la complexité du projet.',
+  },
+  {
+    number: '04',
+    title: 'Séances de tatouage',
+    description:
+      'Les grands projets sont réalisés sur plusieurs séances pour respecter la peau et garantir une qualité durable.',
+  },
+]
 
-  const scrollToBookingForm = () => {
-    router.push("/booking")
-  }
-
+const scrollToBookingForm = () => {
+  router.push('/booking')
+}
 </script>
 
 <style scoped>
@@ -184,11 +145,7 @@
   padding: 96px 24px;
   color: var(--primary-color);
   background:
-    radial-gradient(
-      circle at top right,
-      rgba(217, 196, 163, 0.08),
-      transparent 34%
-    ),
+    radial-gradient(circle at top right, rgba(217, 196, 163, 0.08), transparent 34%),
     var(--background-color);
 }
 
@@ -213,7 +170,7 @@
 .project-presentation__title {
   max-width: 800px;
   margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: Georgia, 'Times New Roman', serif;
   font-size: clamp(2.7rem, 7vw, 6.4rem);
   font-weight: 400;
   line-height: 0.95;
@@ -292,7 +249,7 @@
 .project-step__number {
   padding-top: 5px;
   color: var(--accent-color);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: Georgia, 'Times New Roman', serif;
   font-size: 1rem;
 }
 
@@ -302,7 +259,7 @@
 
 .project-step__title {
   margin: 0 0 15px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: Georgia, 'Times New Roman', serif;
   font-size: clamp(1.45rem, 3vw, 2.3rem);
   font-weight: 400;
   line-height: 1.1;
@@ -333,7 +290,7 @@
 .project-presentation__cta-content > p {
   margin: 0 0 30px;
   color: var(--primary-color);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: Georgia, 'Times New Roman', serif;
   font-size: clamp(1.5rem, 3vw, 2.5rem);
   line-height: 1.2;
 }

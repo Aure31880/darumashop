@@ -2,11 +2,9 @@
   <div class="booking-page">
     <div class="booking-card">
       <div
-        class="mb-8 mt-6 rounded-2xl border border-zinc-700/50 bg-zinc-900/60 p-6 text-zinc-200 shadow-lg backdrop-blur-sm">
-
-        <p class="text-lg font-semibold text-white">
-          Merci pour votre intérêt pour mon travail.
-        </p>
+        class="mb-8 mt-6 rounded-2xl border border-zinc-700/50 bg-zinc-900/60 p-6 text-zinc-200 shadow-lg backdrop-blur-sm"
+      >
+        <p class="text-lg font-semibold text-white">Merci pour votre intérêt pour mon travail.</p>
 
         <div class="mt-4 space-y-4 text-sm leading-7 text-zinc-300 md:text-base">
           <p>
@@ -14,26 +12,20 @@
             <span class="font-semibold text-white">
               réalistes noir et gris, pour les projets de grandes envergures
             </span>
-            le tatouage est réalisé sur plusieurs sessions afin d'assurer profondeur
-            et équilibre dans le temps.
+            le tatouage est réalisé sur plusieurs sessions afin d'assurer profondeur et équilibre
+            dans le temps.
           </p>
 
-          <div
-            class="rounded-xl border border-amber-500/30 bg-amber-500/10 p-5 text-center">
+          <div class="rounded-xl border border-amber-500/30 bg-amber-500/10 p-5 text-center">
+            <p class="text-sm uppercase tracking-widest text-amber-300">Tarification</p>
 
-            <p class="text-sm uppercase tracking-widest text-amber-300">
-              Tarification
-            </p>
-
-            <p class="mt-2 text-2xl font-bold text-white">
-              À partir de votre projet
-            </p>
+            <p class="mt-2 text-2xl font-bold text-white">À partir de votre projet</p>
 
             <p class="mt-3 leading-7 text-zinc-300">
-              Chaque tatouage fait l'objet d'un devis personnalisé.
-              Une journée complète est facturée
-              <span class="font-semibold text-white">400 €</span>,
-              mais un projet plus court ou un flash sera adapté à son temps de réalisation.
+              Chaque tatouage fait l'objet d'un devis personnalisé. Une journée complète est
+              facturée
+              <span class="font-semibold text-white">400 €</span>, mais un projet plus court ou un
+              flash sera adapté à son temps de réalisation.
             </p>
           </div>
 
@@ -46,21 +38,16 @@
           </p> -->
 
           <p>
-            Ce formulaire me permet de comprendre votre projet et d'évaluer sa
-            cohérence avec ma direction artistique.
+            Ce formulaire me permet de comprendre votre projet et d'évaluer sa cohérence avec ma
+            direction artistique.
           </p>
 
-          <div
-            class="rounded-lg border-l-4 border-white/70 bg-zinc-800/60 p-4">
-            <p class="font-medium text-white">
-              📩 Chaque demande est consultée personnellement.
-            </p>
+          <div class="rounded-lg border-l-4 border-white/70 bg-zinc-800/60 p-4">
+            <p class="font-medium text-white">📩 Chaque demande est consultée personnellement.</p>
 
             <p class="mt-2 text-zinc-300">
               Je réponds généralement sous
-              <span class="font-semibold text-white">
-                3 à 7 jours ouvrés.
-              </span>
+              <span class="font-semibold text-white"> 3 à 7 jours ouvrés. </span>
             </p>
           </div>
         </div>
@@ -68,13 +55,8 @@
       <!-- JE VEUX LE METTRE ICI -->
       <form
         @submit.prevent="submitBooking"
-        class="
-          w-full
-          max-w-xxl
-          mx-auto
-          px-4 py-6
-          sm:px-6
-          md:p-8">
+        class="w-full max-w-xxl mx-auto px-4 py-6 sm:px-6 md:p-8"
+      >
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <label for="name" class="block mb-2">Prénom, Nom</label>
@@ -102,26 +84,28 @@
               id="phone"
               v-model="form.phone"
               type="tel"
-              class="w-full rounded-lg border px-3 py-3"/>
+              class="w-full rounded-lg border px-3 py-3"
+            />
           </div>
         </div>
         <div class="form-group mt-6">
           <label class="block mb-2 text-xl" for="description">Description du projet</label>
-          <p class="subdescription text-xs">Thème, idées, taille, emplacement, ambiance recherchée. Vous pouvez ajouter tout élément que vous jugez important pour la compréhension du projet.</p>
+          <p class="subdescription text-xs">
+            Thème, idées, taille, emplacement, ambiance recherchée. Vous pouvez ajouter tout élément
+            que vous jugez important pour la compréhension du projet.
+          </p>
           <textarea
             id="description"
             class="w-full rounded-lg border"
             v-model="form.description"
             rows="8"
             placeholder=""
-            required/>
+            required
+          />
         </div>
         <div class="flex flex-col gap-10 mt-6">
           <label class="text-xl zone">Zone à tatouer *</label>
-          <div 
-            v-for="(label, value) in ZONES_LABELS"
-            :key="value"
-            class="inline-flex items-center">
+          <div v-for="(label, value) in ZONES_LABELS" :key="value" class="inline-flex items-center">
             <label class="relative flex items-center cursor-pointer" for="html-custom">
               <input
                 type="radio"
@@ -132,7 +116,8 @@
                 class="peer h-5 w-5 rounded-full border border-zinc-500 bg-zinc-900 checked:border-amber-500"
               />
               <span
-                class="absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime-500 opacity-0 transition-opacity peer-checked:opacity-100 pointer-events-none">
+                class="absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime-500 opacity-0 transition-opacity peer-checked:opacity-100 pointer-events-none"
+              >
               </span>
             </label>
             <label class="ml-2 text-white-600 cursor-pointer text-m" for="html-custom">
@@ -147,25 +132,18 @@
             class="rounded-lg mt-4 border w-64 px-3 py-3"
             multiple
             accept="image/*"
-            @change="handleFilesUpload"/>
+            @change="handleFilesUpload"
+          />
         </div>
         <div class="preview-container mt-6">
-          <div
-            v-for="(image, index) in previews"
-            :key="index"
-            class="preview-card">
+          <div v-for="(image, index) in previews" :key="index" class="preview-card">
             <img :src="image" alt="preview" />
-            <button
-            type="button"
-              @click.prevent="removeImage(index)"
-              class="btn delete-btn">
+            <button type="button" @click.prevent="removeImage(index)" class="btn delete-btn">
               ×
             </button>
           </div>
         </div>
-        <button
-          type="submit"
-          class="btn mt-6 w-full rounded-lg px-4 py-3 md:w-auto">
+        <button type="submit" class="btn mt-6 w-full rounded-lg px-4 py-3 md:w-auto">
           Envoyer
         </button>
       </form>
@@ -173,7 +151,7 @@
   </div>
 </template>
 <script setup>
-import { onMounted, onBeforeUnmount, reactive, ref } from "vue"
+import { onMounted, onBeforeUnmount, reactive, ref } from 'vue'
 import api from '../service/api'
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
@@ -191,26 +169,24 @@ const getInitialForm = () => ({
   description: '',
   date: '',
   references: [],
-  zone: null
+  zone: null,
 })
 
 const form = reactive(getInitialForm())
 
-const handleFilesUpload = event => {
+const handleFilesUpload = (event) => {
   const uploadedFiles = Array.from(event.target.files ?? [])
 
   files.value.push(...uploadedFiles)
 
-  const newPreviews = uploadedFiles.map(file =>
-    URL.createObjectURL(file)
-  )
+  const newPreviews = uploadedFiles.map((file) => URL.createObjectURL(file))
 
   previews.value.push(...newPreviews)
 
   event.target.value = ''
 }
 
-const removeImage = index => {
+const removeImage = (index) => {
   const previewUrl = previews.value[index]
 
   if (previewUrl) {
@@ -221,7 +197,7 @@ const removeImage = index => {
   previews.value.splice(index, 1)
 }
 
-const createAppointment = async clientResponse => {
+const createAppointment = async (clientResponse) => {
   const formData = new FormData()
 
   formData.append('client_id', clientResponse.data.id)
@@ -245,14 +221,14 @@ const createClient = async () => {
   const response = await api.post('/clients/', {
     name: form.name,
     email: form.email,
-    phone: form.phone || null
+    phone: form.phone || null,
   })
 
   await createAppointment(response)
 }
 
 const resetForm = () => {
-  previews.value.forEach(url => {
+  previews.value.forEach((url) => {
     URL.revokeObjectURL(url)
   })
 
@@ -272,60 +248,48 @@ const submitBooking = async () => {
     formspreeData.append('email', form.email)
     formspreeData.append('phone', form.phone)
     formspreeData.append('description', form.description)
-    formspreeData.append(
-      'zone',
-      ZONES_LABELS[form.zone] ?? form.zone ?? ''
-    )
+    formspreeData.append('zone', ZONES_LABELS[form.zone] ?? form.zone ?? '')
 
     const response = await fetch(import.meta.env.VITE_FORMSPREE, {
       method: 'POST',
       body: formspreeData,
       headers: {
-        Accept: 'application/json'
-      }
+        Accept: 'application/json',
+      },
     })
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null)
 
-      throw new Error(
-        errorData?.errors?.[0]?.message
-          ?? `Erreur Formspree : ${response.status}`
-      )
+      throw new Error(errorData?.errors?.[0]?.message ?? `Erreur Formspree : ${response.status}`)
     }
 
     await createClient()
 
     toast.success('Votre message a bien été envoyé !', {
       theme: 'auto',
-      position: 'bottom-left'
+      position: 'bottom-left',
     })
 
     resetForm()
   } catch (error) {
-    console.error(
-      'Erreur lors de l’envoi du formulaire :',
-      error.response?.data ?? error
-    )
+    console.error('Erreur lors de l’envoi du formulaire :', error.response?.data ?? error)
 
     toast.error(
-      error.response?.data?.detail
-        ?? error.message
-        ?? 'Une erreur est survenue pendant l’envoi.',
+      error.response?.data?.detail ?? error.message ?? 'Une erreur est survenue pendant l’envoi.',
       {
         theme: 'auto',
-        position: 'bottom-left'
-      }
+        position: 'bottom-left',
+      },
     )
   }
 }
 
 onBeforeUnmount(() => {
-  previews.value.forEach(url => {
+  previews.value.forEach((url) => {
     URL.revokeObjectURL(url)
   })
 })
-  
 </script>
 <style scoped>
 .preview-card {

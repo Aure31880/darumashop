@@ -1,9 +1,9 @@
-import { computed, ref } from "vue"
-import { defineStore } from "pinia"
+import { computed, ref } from 'vue'
+import { defineStore } from 'pinia'
 
 import api from '../service/api'
 
-export const useAuthStore = defineStore("auth", () => {
+export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
   const isLoading = ref(false)
   const isInitialized = ref(false)
@@ -13,21 +13,18 @@ export const useAuthStore = defineStore("auth", () => {
   })
 
   async function login(username, password) {
-    const response = await api.post("/login", {
+    const response = await api.post('/login', {
       username,
       password,
     })
 
-    localStorage.setItem(
-      "access_token",
-      response.data.access_token,
-    )
+    localStorage.setItem('access_token', response.data.access_token)
 
     await fetchCurrentUser()
   }
 
   async function fetchCurrentUser() {
-    const token = localStorage.getItem("access_token")
+    const token = localStorage.getItem('access_token')
 
     if (!token) {
       user.value = null
@@ -38,10 +35,10 @@ export const useAuthStore = defineStore("auth", () => {
     isLoading.value = true
 
     try {
-      const response = await api.get("/users/me")
+      const response = await api.get('/users/me')
       user.value = response.data
     } catch (error) {
-      localStorage.removeItem("access_token")
+      localStorage.removeItem('access_token')
       user.value = null
     } finally {
       isLoading.value = false
@@ -50,8 +47,27 @@ export const useAuthStore = defineStore("auth", () => {
   }
 
   function logout() {
-    localStorage.removeItem("access_token")
+    localStorage.removeItem('access_token')
     user.value = null
+  }
+
+  async function initializeAuth() {
+    const token = localStorage.getItem('access_token')
+
+    if (!token) {
+      user.value = null
+      isInitialized.value = true
+      return
+    }
+
+    try {
+      await fetchCurrentUser()
+    } catch {
+      localStorage.removeItem('access_token')
+      user.value = null
+    } finally {
+      isInitialized.value = true
+    }
   }
 
   return {
@@ -62,24 +78,6 @@ export const useAuthStore = defineStore("auth", () => {
     login,
     fetchCurrentUser,
     logout,
-  }
-
-  async function initializeAuth() {
-    const token = localStorage.getItem("access_token")
-
-    if (!token) {
-      this.user = null
-      this.isInitialized = true
-      return
-    }
-
-    try {
-      await this.fetchCurrentUser()
-    } catch {
-      localStorage.removeItem("access_token")
-      this.user = null
-    } finally {
-      this.isInitialized = true
-    }
+    initializeAuth,
   }
 })

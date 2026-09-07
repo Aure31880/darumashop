@@ -4,16 +4,11 @@ const savedTheme = localStorage.getItem('theme') || 'dark'
 const theme = ref(savedTheme)
 
 function applyTheme() {
-  document.documentElement.classList.toggle(
-    'light',
-    theme.value === 'light',
-  )
+  document.documentElement.classList.toggle('light', theme.value === 'light')
 }
 
 function toggleTheme() {
-  theme.value = theme.value === 'dark'
-    ? 'light'
-    : 'dark'
+  theme.value = theme.value === 'dark' ? 'light' : 'dark'
 
   localStorage.setItem('theme', theme.value)
   applyTheme()
@@ -27,7 +22,6 @@ export function useTheme() {
     toggleTheme,
   }
 }
-
 
 // import { ref, watch } from 'vue'
 

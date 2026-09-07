@@ -1,17 +1,17 @@
-import { beforeEach, describe, expect, it, vi } from "vitest"
-import { createPinia, setActivePinia } from "pinia"
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
 
-import api from "../service/api"
-import { useAuthStore } from "./auth"
+import api from '../service/api'
+import { useAuthStore } from './auth'
 
-vi.mock("../service/api", () => ({
+vi.mock('../service/api', () => ({
   default: {
     post: vi.fn(),
     get: vi.fn(),
   },
 }))
 
-describe("auth store", () => {
+describe('auth store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     localStorage.clear()
@@ -21,7 +21,7 @@ describe("auth store", () => {
   it("connecte l'utilisateur et charge son profil", async () => {
     api.post.mockResolvedValue({
       data: {
-        access_token: "fake-token",
+        access_token: 'fake-token',
       },
     })
 
@@ -34,17 +34,16 @@ describe("auth store", () => {
 
     const authStore = useAuthStore()
 
-    await authStore.login("AL'ink", "secret123")
+    await authStore.login("AL'ink", 'secret123')
 
-    expect(api.post).toHaveBeenCalledWith("/login", {
+    expect(api.post).toHaveBeenCalledWith('/login', {
       username: "AL'ink",
-      password: "secret123",
+      password: 'secret123',
     })
 
-    expect(localStorage.getItem("access_token"))
-      .toBe("fake-token")
+    expect(localStorage.getItem('access_token')).toBe('fake-token')
 
-    expect(api.get).toHaveBeenCalledWith("/users/me")
+    expect(api.get).toHaveBeenCalledWith('/users/me')
 
     expect(authStore.user).toEqual({
       id: 1,
@@ -54,7 +53,7 @@ describe("auth store", () => {
     expect(authStore.isAuthenticated).toBe(true)
   })
   it("récupère l'utilisateur courant lorsqu'un token existe", async () => {
-    localStorage.setItem("access_token", "fake-token")
+    localStorage.setItem('access_token', 'fake-token')
 
     api.get.mockResolvedValue({
       data: {
@@ -84,8 +83,8 @@ describe("auth store", () => {
     expect(authStore.user).toBeNull()
     expect(authStore.isInitialized).toBe(true)
   })
-  it("supprime le token lorsque /users/me échoue", async () => {
-    localStorage.setItem("access_token", "expired-token")
+  it('supprime le token lorsque /users/me échoue', async () => {
+    localStorage.setItem('access_token', 'expired-token')
 
     api.get.mockRejectedValue({
       response: {
@@ -97,12 +96,12 @@ describe("auth store", () => {
 
     await authStore.fetchCurrentUser()
 
-    expect(localStorage.getItem("access_token")).toBeNull()
+    expect(localStorage.getItem('access_token')).toBeNull()
     expect(authStore.user).toBeNull()
     expect(authStore.isInitialized).toBe(true)
   })
   it("déconnecte l'utilisateur", () => {
-    localStorage.setItem("access_token", "fake-token")
+    localStorage.setItem('access_token', 'fake-token')
 
     const authStore = useAuthStore()
 
@@ -113,7 +112,7 @@ describe("auth store", () => {
 
     authStore.logout()
 
-    expect(localStorage.getItem("access_token")).toBeNull()
+    expect(localStorage.getItem('access_token')).toBeNull()
     expect(authStore.user).toBeNull()
     expect(authStore.isAuthenticated).toBe(false)
   })

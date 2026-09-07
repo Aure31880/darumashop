@@ -54,6 +54,9 @@ importers:
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1
+      prettier:
+        specifier: ^3.9.6
+        version: 3.9.6
       vite:
         specifier: ^7.3.1
         version: 7.3.5(@types/node@26.3.0)(jiti@2.7.0)(lightningcss@1.32.0)
@@ -1259,6 +1262,11 @@ packages:
     peerDependenciesMeta:
       preact-render-to-string:
         optional: true
+
+  prettier@3.9.6:
+    resolution: {integrity: sha512-OpN0zzVdiaiAhxpuuj5efpIS4sY9j7bY6uR5mnj5yPzGkdkjNKSJeUThPb60Jw29QuAZgA4o+/iB49kFiaBX6g==}
+    engines: {node: '>=14'}
+    hasBin: true
 
   proto-list@1.2.4:
     resolution: {integrity: sha512-vtK/94akxsTMhe0/cbfpR+syPuszcuwhqVjJq26CuNDgFGj682oRBXOP5MJpv2r7JtE8MsiepGIqvvOTBwn2vA==}
@@ -2599,6 +2607,8 @@ snapshots:
       source-map-js: 1.2.1
 
   preact@10.29.7: {}
+
+  prettier@3.9.6: {}
 
   proto-list@1.2.4: {}
 

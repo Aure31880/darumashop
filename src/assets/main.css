@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --bg-main: #0b0c0e;
@@ -60,13 +60,9 @@
 
 body {
   margin: 0;
-  background: radial-gradient(
-    circle at top,
-    var(--body-gradient-start),
-    var(--body-gradient-end)
-  );
+  background: radial-gradient(circle at top, var(--body-gradient-start), var(--body-gradient-end));
   color: var(--text);
-  font-family:sans-serif;
+  font-family: sans-serif;
 }
 
 /* body {
@@ -96,11 +92,7 @@ body {
 /* ===== SIDEBAR ===== */
 .sidebar {
   width: 240px;
-  background: linear-gradient(
-    180deg,
-    var(--sidebar-gradient-start),
-    var(--sidebar-gradient-end)
-  );
+  background: linear-gradient(180deg, var(--sidebar-gradient-start), var(--sidebar-gradient-end));
   border-right: 1px solid var(--border);
   padding: 20px;
 }
@@ -149,11 +141,7 @@ body {
 
 /* ===== CARDS ===== */
 .card {
-  background: linear-gradient(
-    180deg,
-    var(--card-gradient-start),
-    var(--card-gradient-end)
-  );
+  background: linear-gradient(180deg, var(--card-gradient-start), var(--card-gradient-end));
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 16px;
@@ -239,7 +227,6 @@ body {
   margin-bottom: 22px; */
 }
 
-
 input,
 textarea {
   background: var(--input-bg);
@@ -291,7 +278,7 @@ button:hover {
   margin-top: 16px;
   color: #4caf50;
   text-align: center;
-  font-size: 0.9rem
+  font-size: 0.9rem;
 }
 
 /* ===== CLIENTS PAGE ===== */
@@ -372,7 +359,10 @@ button:hover {
   margin-bottom: 12px;
 }
 
-label, p, h1, h2 {
+label,
+p,
+h1,
+h2 {
   /* font-weight: 700; */
-  font-family: font-serif
+  font-family: font-serif;
 }

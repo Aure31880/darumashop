@@ -1,7 +1,5 @@
 <template>
-  <header
-    class="flex items-center justify-between gap-4 px-4 py-3"
-  >
+  <header class="flex items-center justify-between gap-4 px-4 py-3">
     <div class="flex items-center">
       <span class="font-semibold text-zinc-800 dark:text-zinc-100">
         Welcome {{ user?.username }} 🤘
@@ -12,8 +10,7 @@
       <Notifications />
 
       <button
-        class="flex h-10 w-10 items-center justify-center rounded-lg transition
-               hover:bg-zinc-100 dark:hover:bg-zinc-800"
+        class="flex h-10 w-10 items-center justify-center rounded-lg transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
         @click="toggleTheme"
       >
         <span v-if="theme === 'dark'">☀️</span>
@@ -21,11 +18,7 @@
       </button>
 
       <button
-        class="rounded-lg px-4 py-2 text-sm font-medium
-               text-zinc-700 transition
-               hover:bg-zinc-100
-               dark:text-zinc-200
-               dark:hover:bg-zinc-800"
+        class="rounded-lg px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-800"
         @click="logout"
       >
         Déconnexion
@@ -35,22 +28,21 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router"
-import { storeToRefs } from "pinia"
-import { useAuthStore } from "../stores/auth"
+import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { useAuthStore } from '../stores/auth'
 import { useTheme } from '../composables/useTheme'
 import Notifications from '../components/Notifications.vue'
 
-  const { theme, toggleTheme } = useTheme()
-  const router = useRouter()
-  const authStore = useAuthStore()
-  const { user, username } = storeToRefs(authStore)
+const { theme, toggleTheme } = useTheme()
+const router = useRouter()
+const authStore = useAuthStore()
+const { user, username } = storeToRefs(authStore)
 
-  function logout () {
-    authStore.logout()
-    router.push("/login")
-  }
-  
+function logout() {
+  authStore.logout()
+  router.push('/login')
+}
 </script>
 <style scoped>
 .topbar {

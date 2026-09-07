@@ -5,33 +5,29 @@ import BookingView from '../components/BookingView.vue'
 import AppLogin from '../components/AppLogin.vue'
 import DashboardVue from '../views/Dashboard.vue'
 import LandingPage from '../components/LandingPage.vue'
-import { useAuthStore } from "../stores/auth"
+import { useAuthStore } from '../stores/auth'
 
 const routes = [
-  { 
+  {
     path: '/login',
     name: 'login',
     component: AppLogin,
-    meta: { hideLayout: true }
+    meta: { hideLayout: true },
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
     component: DashboardVue,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
-  { path:
-    '/calendar',
-    component: CalendarView,
-    meta: { requiresAuth: true }
-  },
+  { path: '/calendar', component: CalendarView, meta: { requiresAuth: true } },
   {
     path: '/clients/:id?',
     name: 'Clients',
     component: Client,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
-  // { 
+  // {
   //   path: '/clients',
   //   component: Client,
   //   meta: { requiresAuth: true }
@@ -47,10 +43,10 @@ const routes = [
     path: '/booking',
     name: 'Booking',
     component: BookingView,
-    meta: { 
+    meta: {
       hideLayout: true,
-      fixedTheme: true
-   }
+      fixedTheme: true,
+    },
   },
   {
     path: '/',
@@ -58,13 +54,13 @@ const routes = [
     component: LandingPage,
     meta: {
       hideLayout: true,
-      fixedTheme: true
-    }
-  }
+      fixedTheme: true,
+    },
+  },
 ]
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
 })
 
 router.beforeEach(async (to, from) => {
@@ -73,23 +69,22 @@ router.beforeEach(async (to, from) => {
   if (!authStore.isInitialized) {
     await authStore.initializeAuth()
   }
-  
-  const token = localStorage.getItem("access_token")
+
+  const token = localStorage.getItem('access_token')
 
   if (to.meta.requiresAuth && !authStore.user) {
     return {
-      name: "/",
+      name: '/',
       query: {
         redirect: from.fullPath,
       },
     }
   }
 
-  if (to.name === "login" && authStore.user) {
-    return { name: "dashboard" }
+  if (to.name === 'login' && authStore.user) {
+    return { name: 'dashboard' }
   }
   return true
 })
-
 
 export default router

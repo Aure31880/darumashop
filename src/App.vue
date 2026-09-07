@@ -1,9 +1,7 @@
 <template>
   <div class="app-root min-h-screen">
     <div class="flex justify-between">
-      <h1
-        class="text-3xl font-bold p-4"
-        style="padding: 20px">
+      <h1 class="text-3xl font-bold p-4" style="padding: 20px">
         Daruma Tattoo Shop
         <span v-if="!$route.meta.hideLayout">Dashboard</span>
       </h1>
@@ -14,9 +12,7 @@
     <AdminLayout v-else>
       <RouterView />
     </AdminLayout>
-    <div
-      v-if="!$route.meta.hideLayout"
-      class="idApp">
+    <div v-if="!$route.meta.hideLayout" class="idApp">
       <span>{{ nameApp }}</span>
       <span>{{ version }}</span>
     </div>
