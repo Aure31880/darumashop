@@ -80,6 +80,11 @@
               <dt>Téléphone:</dt>
               <dd>{{ selected.client.phone || 'Non renseigné' }}</dd>
             </div>
+
+            <div class="information-row">
+              <dt>Date de creation:</dt>
+              <dd>{{ displayService.formatFullDate(selected.created_on) }}</dd>
+            </div>
           </dl>
         </article>
 
