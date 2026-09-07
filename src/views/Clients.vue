@@ -387,25 +387,31 @@ const followUpAttachments = computed(() => {
   )
 })
 
-function selectAppointmentFromRoute() {
-  const appointmentId = Number(route.params.id)
+function selectClientFromRoute() {
+  const clientId = Number(route.params.id)
 
-  if (!appointmentId) {
+  if (!clientId) {
     return
   }
 
-  const appointment = rdvs.value.find((rdv) => rdv.id === appointmentId)
+  const rdv = rdvs.value.find((rdv) => Number(rdv.client?.id) === clientId)
 
-  if (appointment) {
-    selectClient(appointment)
+  if (rdv) {
+    selectClient(rdv)
   }
+}
+
+async function fetchAppointments() {
+  const response = await api.get('/appointments/')
+  rdvs.value = response.data
 }
 
 onMounted(async () => {
   try {
     const response = await api.get('/appointments/')
     rdvs.value = response.data
-    selectAppointmentFromRoute()
+
+    selectClientFromRoute()
   } catch (error) {
     console.error('Erreur chargement des rendez-vous', error)
   }
@@ -413,8 +419,8 @@ onMounted(async () => {
 
 watch(
   () => route.params.id,
-  () => {
-    selectAppointmentFromRoute()
+  async () => {
+    await selectClientFromRoute()
   },
 )
 

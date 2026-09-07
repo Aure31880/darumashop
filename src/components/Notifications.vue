@@ -112,8 +112,7 @@ const handleNotificationClick = async (notification) => {
   if (!notification.is_read) {
     await notificationStore.markAsRead(notification.id)
   }
-
-  if (notification.type === 'appointment_created' && notification.resource_id) {
+  if (notification.type === 'appointment' && notification.resource_id) {
     await router.push({
       name: 'Clients',
       params: {
